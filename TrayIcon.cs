@@ -7,18 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
+using ServiceStack;
 using static ServiceStack.Svg;
 
 namespace OctopusAgileNotification
 {
-	internal class ColourSettings
-	{
-		public Color text { get; set; }
-		public Color background { get; set; }
-		public int threshold { get; set; }
-	}
-
-
 	/// <summary>
 	/// class wrapping a little icon in the taskbar's notify area.
 	/// This updates every half hour with current Octopus Agile price data, and fetches new data every day at around 4pm
@@ -31,8 +24,8 @@ namespace OctopusAgileNotification
 		private readonly NotifyIcon notifyIcon;
 		private bool disposedValue;
 
-		List<ColourSettings> colours;
-
+		private readonly ColourSettings[] colours;
+		private float currentPrice;
 
 		public TrayIcon()
 		{
@@ -52,13 +45,13 @@ namespace OctopusAgileNotification
 			notifyIcon.Click += new EventHandler(Click);
 
 			// set defaults
-			colours = new List<ColourSettings>()
-			{
+			colours =
+			[
 				new ColourSettings() { background = Color.Blue,			text = Color.White,	threshold = 0 },
 				new ColourSettings() { background = Color.Transparent,	text = Color.Green,	threshold = 15 },
 				new ColourSettings() { background = Color.Orange,		text = Color.Black,	threshold = 24 },
 				new ColourSettings() { background = Color.Red,			text = Color.White,	threshold = 999 },
-			};
+			];
 		}
 
 
@@ -72,9 +65,11 @@ namespace OctopusAgileNotification
 			return colours[0];
 		}
 
+
 		// Change the value shown on the tray icon
 		public void SetTextIcon(float price)
 		{
+			currentPrice = price;
 			ColourSettings currentColour = GetColours(price);
 
 			notifyIcon.Text = $"{price:F2}p";
@@ -110,10 +105,22 @@ namespace OctopusAgileNotification
 
 		void ChangeSettings(object sender, EventArgs e)
 		{
-			Form settingsForm = new Form();
+			Preferences settingsForm = new Preferences();
+			settingsForm.ThresholdChanged += UpdateThresholds;
 			settingsForm.ShowDialog();
+			settingsForm.ThresholdChanged -= UpdateThresholds;
+
+
+			SetTextIcon(currentPrice);
 		}
 
+
+		private void UpdateThresholds(object sender, ChangeThresholdEventArgs e)
+		{
+			if (e.bgColour != null) colours[e.level].background = (Color)e.bgColour;
+			if (e.fgColour != null) colours[e.level].text = (Color)e.fgColour;
+			colours[e.level].threshold = e.threshold;
+		}
 
 		public void Exit(object sender, EventArgs e)
 		{

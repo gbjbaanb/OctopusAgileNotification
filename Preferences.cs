@@ -1,0 +1,189 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using OctopusAgileNotification.Properties;
+
+namespace OctopusAgileNotification
+{
+	partial class Preferences : Form
+	{
+		public event EventHandler<ChangeThresholdEventArgs> ThresholdChanged;
+
+		public Preferences()
+		{
+			InitializeComponent();
+		}
+
+		#region Assembly Attribute Accessors
+
+		public string AssemblyTitle
+		{
+			get
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+				if (attributes.Length > 0)
+				{
+					AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+					if (titleAttribute.Title != "")
+					{
+						return titleAttribute.Title;
+					}
+				}
+				return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
+			}
+		}
+
+		public string AssemblyVersion
+		{
+			get
+			{
+				return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			}
+		}
+
+		public string AssemblyDescription
+		{
+			get
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+				if (attributes.Length == 0)
+				{
+					return "";
+				}
+				return ((AssemblyDescriptionAttribute)attributes[0]).Description;
+			}
+		}
+
+		public string AssemblyProduct
+		{
+			get
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+				if (attributes.Length == 0)
+				{
+					return "";
+				}
+				return ((AssemblyProductAttribute)attributes[0]).Product;
+			}
+		}
+
+		public string AssemblyCopyright
+		{
+			get
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+				if (attributes.Length == 0)
+				{
+					return "";
+				}
+				return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+			}
+		}
+
+		public string AssemblyCompany
+		{
+			get
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+				if (attributes.Length == 0)
+				{
+					return "";
+				}
+				return ((AssemblyCompanyAttribute)attributes[0]).Company;
+			}
+		}
+		#endregion
+
+		private Regex parser = new Regex("(?<baseapi>https[A-Za-z0-9:\\./-]+)/(?<product>[A-Za-z0-9-]+)/electricity-tariffs/(?<tariff>[A-Za-z0-9-]+)/");
+
+		private void textProduct_TextChanged(object sender, EventArgs e)
+		{
+			Settings.Default.ProductCode = textProduct.Text;
+		}
+
+		private void textTariff_TextChanged(object sender, EventArgs e)
+		{
+			Settings.Default.TariffCode = textTariff.Text;
+		}
+
+		private void textAPI_TextChanged(object sender, EventArgs e)
+		{
+			// parse the input into base, product and tariff
+			Match m = parser.Match(textAPI.Text);
+
+			if (m.Success)
+			{
+				Settings.Default.OctopusBaseURL = m.Groups[1].Captures[0].Value;
+				textProduct.Text = m.Groups[2].Captures[0].Value;
+				textTariff.Text = m.Groups[3].Captures[0].Value;
+			}
+
+			// https://api.octopus.energy/v1/products/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-H/standard-unit-rates/?period_from=2024-01-31T15:37:19
+		}
+
+		private void Preferences_FormClosed(object sender, FormClosedEventArgs e)
+		{
+		}
+
+		private void Preferences_Load(object sender, EventArgs e)
+		{
+			textProduct.Text = Settings.Default.ProductCode;
+			textTariff.Text = Settings.Default.TariffCode;
+
+			// load thresholds
+
+		}
+
+
+
+		private void textBoxThreshold0_TextChanged(object sender, EventArgs e)
+		{
+			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(0, ((TextBox)sender).Text, null, null));
+		}
+
+		private void textBoxThreshold1_TextChanged(object sender, EventArgs e)
+		{
+			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(1, ((TextBox)sender).Text, null, null));
+		}
+
+		private void textBoxThreshold2_TextChanged(object sender, EventArgs e)
+		{
+			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(2, ((TextBox)sender).Text, null, null));
+		}
+
+
+		private void ClickBackgroundBtn(object sender, int lev)
+		{
+			ColorDialog dlg = new ColorDialog();
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				((Button)sender).BackColor = dlg.Color;
+				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, null, dlg.Color));
+			}
+		}
+		private void ClickForegroundBtn(object sender, int lev)
+		{
+			ColorDialog dlg = new ColorDialog();
+			if (dlg.ShowDialog() == DialogResult.OK)
+			{
+				((Button)sender).BackColor = dlg.Color;
+				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, dlg.Color, null));
+			}
+		}
+
+		private void btnColourFg0_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 0); }
+		private void btnColourBg0_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 0); }
+		private void btnColourFg1_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 1); }
+		private void btnColourBg1_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 1); }
+		private void btnColourFg2_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 2); }
+		private void btnColourBg2_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 2); }
+		private void btnColourFg3_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 3); }
+		private void btnColourBg3_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 3); }
+	}
+}

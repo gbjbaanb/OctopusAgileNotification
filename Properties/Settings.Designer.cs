@@ -22,5 +22,41 @@ namespace OctopusAgileNotification.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.octopus.energy/v1/products/")]
+        public string OctopusBaseURL {
+            get {
+                return ((string)(this["OctopusBaseURL"]));
+            }
+            set {
+                this["OctopusBaseURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AGILE-18-02-21")]
+        public string ProductCode {
+            get {
+                return ((string)(this["ProductCode"]));
+            }
+            set {
+                this["ProductCode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("E-1R-AGILE-18-02-21-C")]
+        public string TariffCode {
+            get {
+                return ((string)(this["TariffCode"]));
+            }
+            set {
+                this["TariffCode"] = value;
+            }
+        }
     }
 }
