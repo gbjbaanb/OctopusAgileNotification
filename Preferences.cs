@@ -15,8 +15,8 @@ namespace OctopusAgileNotification
 {
 	partial class Preferences : Form
 	{
-		public event EventHandler<ChangeThresholdEventArgs> ThresholdChanged;
 		private ColourSettings[] thresholdPrefs;
+		private Font thresholdFont;
 
 		public Preferences()
 		{
@@ -131,6 +131,29 @@ namespace OctopusAgileNotification
 		}
 
 
+		private void btnFont_Click(object sender, EventArgs e)
+		{
+			FontDialog fnt = new FontDialog();
+			fnt.ShowEffects = false;
+			fnt.FontMustExist = true;
+
+			try
+			{
+				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
+				fnt.Font = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);
+			}
+			catch (Exception)
+			{
+				//default
+				fnt.Font = new Font("Segoe UI", SystemInformation.IconSize.Height * 8 / 10, FontStyle.Regular, GraphicsUnit.Pixel);
+			}
+
+			if (fnt.ShowDialog() == DialogResult.OK)
+			{
+				thresholdFont = fnt.Font;
+			}
+		}
+
 
 		private void Preferences_FormClosed(object sender, FormClosedEventArgs e)
 		{
@@ -139,6 +162,9 @@ namespace OctopusAgileNotification
 			{
 				string thresholds = JsonSerializer.Serialize(thresholdPrefs, options);
 				Settings.Default.Thresholds = thresholds;
+
+				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
+				Settings.Default.Font = cvt.ConvertToInvariantString(thresholdFont);
 			}
 			catch (Exception)
 			{
@@ -166,7 +192,7 @@ namespace OctopusAgileNotification
 					new ColourSettings() { backColour = Color.Transparent, textColour = Color.Green, threshold = 15 },
 					new ColourSettings() { backColour = Color.Orange, textColour = Color.Black, threshold = 24 },
 					new ColourSettings() { backColour = Color.Red, textColour = Color.White, threshold = 999 },
-				];              
+				];
 			}
 
 			// update controls
@@ -189,19 +215,16 @@ namespace OctopusAgileNotification
 		private void textBoxThreshold0_TextChanged(object sender, EventArgs e)
 		{
 			thresholdPrefs[0].threshold = ((TextBox)sender).Text.ToInt();
-			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(0, ((TextBox)sender).Text, null, null));
 		}
 
 		private void textBoxThreshold1_TextChanged(object sender, EventArgs e)
 		{
 			thresholdPrefs[1].threshold = ((TextBox)sender).Text.ToInt();
-			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(1, ((TextBox)sender).Text, null, null));
 		}
 
 		private void textBoxThreshold2_TextChanged(object sender, EventArgs e)
 		{
 			thresholdPrefs[2].threshold = ((TextBox)sender).Text.ToInt();
-			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(2, ((TextBox)sender).Text, null, null));
 		}
 
 
@@ -212,7 +235,6 @@ namespace OctopusAgileNotification
 			{
 				thresholdPrefs[lev].backColour = dlg.Color;
 				((Button)sender).BackColor = dlg.Color;
-				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, null, dlg.Color));
 			}
 		}
 		private void ClickForegroundBtn(object sender, int lev)
@@ -222,7 +244,6 @@ namespace OctopusAgileNotification
 			{
 				thresholdPrefs[lev].textColour = dlg.Color;
 				((Button)sender).ForeColor = dlg.Color;
-				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, dlg.Color, null));
 			}
 		}
 
@@ -234,5 +255,6 @@ namespace OctopusAgileNotification
 		private void btnColourBg2_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 2); }
 		private void btnColourFg3_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 3); }
 		private void btnColourBg3_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 3); }
+
 	}
 }

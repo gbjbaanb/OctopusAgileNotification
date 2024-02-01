@@ -52,6 +52,7 @@
 			btnColourBg3 = new System.Windows.Forms.Button();
 			textBoxThreshold3 = new System.Windows.Forms.TextBox();
 			groupBoxThresholds = new System.Windows.Forms.GroupBox();
+			btnFont = new System.Windows.Forms.Button();
 			tableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)logoPictureBox).BeginInit();
 			groupBoxThresholds.SuspendLayout();
@@ -202,7 +203,7 @@
 			// 
 			// btnColourFg0
 			// 
-			btnColourFg0.Location = new System.Drawing.Point(9, 23);
+			btnColourFg0.Location = new System.Drawing.Point(9, 22);
 			btnColourFg0.Name = "btnColourFg0";
 			btnColourFg0.Size = new System.Drawing.Size(28, 23);
 			btnColourFg0.TabIndex = 25;
@@ -213,9 +214,9 @@
 			// 
 			// textBoxThreshold0
 			// 
-			textBoxThreshold0.Location = new System.Drawing.Point(63, 52);
+			textBoxThreshold0.Location = new System.Drawing.Point(43, 38);
 			textBoxThreshold0.Name = "textBoxThreshold0";
-			textBoxThreshold0.Size = new System.Drawing.Size(62, 23);
+			textBoxThreshold0.Size = new System.Drawing.Size(28, 23);
 			textBoxThreshold0.TabIndex = 4;
 			textBoxThreshold0.Tag = "0";
 			textBoxThreshold0.Text = "0";
@@ -223,7 +224,7 @@
 			// 
 			// btnColourBg0
 			// 
-			btnColourBg0.Location = new System.Drawing.Point(43, 23);
+			btnColourBg0.Location = new System.Drawing.Point(9, 51);
 			btnColourBg0.Name = "btnColourBg0";
 			btnColourBg0.Size = new System.Drawing.Size(28, 23);
 			btnColourBg0.TabIndex = 27;
@@ -234,17 +235,17 @@
 			// 
 			// textBoxThreshold1
 			// 
-			textBoxThreshold1.Location = new System.Drawing.Point(166, 53);
+			textBoxThreshold1.Location = new System.Drawing.Point(111, 38);
 			textBoxThreshold1.Name = "textBoxThreshold1";
-			textBoxThreshold1.Size = new System.Drawing.Size(62, 23);
+			textBoxThreshold1.Size = new System.Drawing.Size(28, 23);
 			textBoxThreshold1.TabIndex = 28;
 			textBoxThreshold1.Tag = "1";
-			textBoxThreshold1.Text = "0";
+			textBoxThreshold1.Text = "9";
 			textBoxThreshold1.TextChanged += textBoxThreshold1_TextChanged;
 			// 
 			// btnColourFg1
 			// 
-			btnColourFg1.Location = new System.Drawing.Point(112, 23);
+			btnColourFg1.Location = new System.Drawing.Point(77, 22);
 			btnColourFg1.Name = "btnColourFg1";
 			btnColourFg1.Size = new System.Drawing.Size(28, 23);
 			btnColourFg1.TabIndex = 29;
@@ -255,7 +256,7 @@
 			// 
 			// btnColourBg1
 			// 
-			btnColourBg1.Location = new System.Drawing.Point(146, 23);
+			btnColourBg1.Location = new System.Drawing.Point(77, 51);
 			btnColourBg1.Name = "btnColourBg1";
 			btnColourBg1.Size = new System.Drawing.Size(28, 23);
 			btnColourBg1.TabIndex = 30;
@@ -266,17 +267,17 @@
 			// 
 			// textBoxThreshold2
 			// 
-			textBoxThreshold2.Location = new System.Drawing.Point(269, 52);
+			textBoxThreshold2.Location = new System.Drawing.Point(179, 38);
 			textBoxThreshold2.Name = "textBoxThreshold2";
-			textBoxThreshold2.Size = new System.Drawing.Size(62, 23);
+			textBoxThreshold2.Size = new System.Drawing.Size(28, 23);
 			textBoxThreshold2.TabIndex = 31;
 			textBoxThreshold2.Tag = "2";
-			textBoxThreshold2.Text = "0";
+			textBoxThreshold2.Text = "99";
 			textBoxThreshold2.TextChanged += textBoxThreshold2_TextChanged;
 			// 
 			// btnColourFg2
 			// 
-			btnColourFg2.Location = new System.Drawing.Point(215, 23);
+			btnColourFg2.Location = new System.Drawing.Point(145, 21);
 			btnColourFg2.Name = "btnColourFg2";
 			btnColourFg2.Size = new System.Drawing.Size(28, 23);
 			btnColourFg2.TabIndex = 32;
@@ -287,7 +288,7 @@
 			// 
 			// btnColourBg2
 			// 
-			btnColourBg2.Location = new System.Drawing.Point(249, 23);
+			btnColourBg2.Location = new System.Drawing.Point(145, 53);
 			btnColourBg2.Name = "btnColourBg2";
 			btnColourBg2.Size = new System.Drawing.Size(28, 23);
 			btnColourBg2.TabIndex = 33;
@@ -298,7 +299,7 @@
 			// 
 			// btnColourFg3
 			// 
-			btnColourFg3.Location = new System.Drawing.Point(318, 23);
+			btnColourFg3.Location = new System.Drawing.Point(213, 21);
 			btnColourFg3.Name = "btnColourFg3";
 			btnColourFg3.Size = new System.Drawing.Size(28, 23);
 			btnColourFg3.TabIndex = 35;
@@ -309,7 +310,7 @@
 			// 
 			// btnColourBg3
 			// 
-			btnColourBg3.Location = new System.Drawing.Point(352, 23);
+			btnColourBg3.Location = new System.Drawing.Point(213, 53);
 			btnColourBg3.Name = "btnColourBg3";
 			btnColourBg3.Size = new System.Drawing.Size(28, 23);
 			btnColourBg3.TabIndex = 36;
@@ -331,6 +332,7 @@
 			// 
 			// groupBoxThresholds
 			// 
+			groupBoxThresholds.Controls.Add(btnFont);
 			groupBoxThresholds.Controls.Add(textBoxThreshold1);
 			groupBoxThresholds.Controls.Add(btnColourFg3);
 			groupBoxThresholds.Controls.Add(btnColourBg0);
@@ -348,6 +350,16 @@
 			groupBoxThresholds.TabIndex = 37;
 			groupBoxThresholds.TabStop = false;
 			groupBoxThresholds.Text = "Thresholds";
+			// 
+			// btnFont
+			// 
+			btnFont.Location = new System.Drawing.Point(299, 22);
+			btnFont.Name = "btnFont";
+			btnFont.Size = new System.Drawing.Size(75, 23);
+			btnFont.TabIndex = 37;
+			btnFont.Text = "Font";
+			btnFont.UseVisualStyleBackColor = true;
+			btnFont.Click += btnFont_Click;
 			// 
 			// Preferences
 			// 
@@ -406,5 +418,6 @@
 		private System.Windows.Forms.Button btnColourBg3;
 		private System.Windows.Forms.TextBox textBoxThreshold3;
 		private System.Windows.Forms.GroupBox groupBoxThresholds;
+		private System.Windows.Forms.Button btnFont;
 	}
 }

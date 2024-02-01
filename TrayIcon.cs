@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
@@ -24,7 +26,8 @@ namespace OctopusAgileNotification
 		private readonly NotifyIcon notifyIcon;
 		private bool disposedValue;
 
-		private readonly ColourSettings[] colours;
+		private ColourSettings[] colours;
+		private Font thresholdFont;
 		private float currentPrice;
 
 		public TrayIcon()
@@ -44,14 +47,32 @@ namespace OctopusAgileNotification
 
 			notifyIcon.Click += new EventHandler(Click);
 
-			// set defaults
-			colours =
-			[
-				new ColourSettings() { backColour = Color.Blue,			textColour = Color.White,	threshold = 0 },
-				new ColourSettings() { backColour = Color.Transparent,	textColour = Color.Green,	threshold = 15 },
-				new ColourSettings() { backColour = Color.Orange,		textColour = Color.Black,	threshold = 24 },
-				new ColourSettings() { backColour = Color.Red,			textColour = Color.White,	threshold = 999 },
-			];
+			try
+			{
+				var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
+				colours = JsonSerializer.Deserialize<ColourSettings[]>(Settings.Default.Thresholds, options);
+			}
+			catch (Exception)
+			{
+				// set defaults
+				colours =
+				[
+					new ColourSettings() { backColour = Color.Blue, textColour = Color.White, threshold = 0 },
+					new ColourSettings() { backColour = Color.Transparent, textColour = Color.Green, threshold = 15 },
+					new ColourSettings() { backColour = Color.Orange, textColour = Color.Black, threshold = 24 },
+					new ColourSettings() { backColour = Color.Red, textColour = Color.White, threshold = 999 },
+				];
+			}
+
+			try
+			{
+				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
+				thresholdFont = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);
+			}
+			catch (Exception)
+			{
+				thresholdFont = new Font("Segoe UI", SystemInformation.IconSize.Height * 8 / 10, FontStyle.Regular, GraphicsUnit.Pixel);
+			}
 		}
 
 
@@ -74,14 +95,13 @@ namespace OctopusAgileNotification
 
 			notifyIcon.Text = $"{price:F2}p";
 
-			using Font fontDecimal = new Font("MS Sans Serif", 30, FontStyle.Regular, GraphicsUnit.Pixel);
 			using Brush brushToUse = new SolidBrush(currentColour.textColour);
-			using Bitmap bitmapText = new Bitmap(32, 32);
+			using Bitmap bitmapText = new Bitmap(SystemInformation.IconSize.Width, SystemInformation.IconSize.Height);
 			using Graphics g = Graphics.FromImage(bitmapText);
 
 			g.Clear(currentColour.backColour);
-			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-			g.DrawString(Math.Round(price).ToString("F0"), fontDecimal, brushToUse, -6, -2);
+			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+			g.DrawString(Math.Round(price).ToString("F0"), thresholdFont, brushToUse, 0, 0);
 
 			// get the icon via Win32, clone it to be managed and then destroy our original
 			IntPtr hIcon = bitmapText.GetHicon();
@@ -106,24 +126,29 @@ namespace OctopusAgileNotification
 		void ChangeSettings(object sender, EventArgs e)
 		{
 			Preferences settingsForm = new Preferences();
-			settingsForm.ThresholdChanged += UpdateThresholds;
 			settingsForm.ShowDialog();
-			settingsForm.ThresholdChanged -= UpdateThresholds;
 
+			// fetch the changes from global settings
+			try
+			{
+				var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
+				colours = JsonSerializer.Deserialize<ColourSettings[]>(Settings.Default.Thresholds, options);
+
+				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
+				thresholdFont = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);
+			}
+			catch (Exception)
+			{
+				// ignore and leave previous values
+			}
 
 			SetTextIcon(currentPrice);
 		}
 
 
-		private void UpdateThresholds(object sender, ChangeThresholdEventArgs e)
-		{
-			if (e.bgColour != null) colours[e.level].backColour = (Color)e.bgColour;
-			if (e.fgColour != null) colours[e.level].textColour = (Color)e.fgColour;
-			colours[e.level].threshold = e.threshold;
-		}
-
 		public void Exit(object sender, EventArgs e)
 		{
+			thresholdFont.Dispose();
 			Application.Exit();
 		}
 
