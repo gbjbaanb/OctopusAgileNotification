@@ -47,10 +47,10 @@ namespace OctopusAgileNotification
 			// set defaults
 			colours =
 			[
-				new ColourSettings() { background = Color.Blue,			text = Color.White,	threshold = 0 },
-				new ColourSettings() { background = Color.Transparent,	text = Color.Green,	threshold = 15 },
-				new ColourSettings() { background = Color.Orange,		text = Color.Black,	threshold = 24 },
-				new ColourSettings() { background = Color.Red,			text = Color.White,	threshold = 999 },
+				new ColourSettings() { backColour = Color.Blue,			textColour = Color.White,	threshold = 0 },
+				new ColourSettings() { backColour = Color.Transparent,	textColour = Color.Green,	threshold = 15 },
+				new ColourSettings() { backColour = Color.Orange,		textColour = Color.Black,	threshold = 24 },
+				new ColourSettings() { backColour = Color.Red,			textColour = Color.White,	threshold = 999 },
 			];
 		}
 
@@ -75,11 +75,11 @@ namespace OctopusAgileNotification
 			notifyIcon.Text = $"{price:F2}p";
 
 			using Font fontDecimal = new Font("MS Sans Serif", 30, FontStyle.Regular, GraphicsUnit.Pixel);
-			using Brush brushToUse = new SolidBrush(currentColour.text);
+			using Brush brushToUse = new SolidBrush(currentColour.textColour);
 			using Bitmap bitmapText = new Bitmap(32, 32);
 			using Graphics g = Graphics.FromImage(bitmapText);
 
-			g.Clear(currentColour.background);
+			g.Clear(currentColour.backColour);
 			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 			g.DrawString(Math.Round(price).ToString("F0"), fontDecimal, brushToUse, -6, -2);
 
@@ -117,8 +117,8 @@ namespace OctopusAgileNotification
 
 		private void UpdateThresholds(object sender, ChangeThresholdEventArgs e)
 		{
-			if (e.bgColour != null) colours[e.level].background = (Color)e.bgColour;
-			if (e.fgColour != null) colours[e.level].text = (Color)e.fgColour;
+			if (e.bgColour != null) colours[e.level].backColour = (Color)e.bgColour;
+			if (e.fgColour != null) colours[e.level].textColour = (Color)e.fgColour;
 			colours[e.level].threshold = e.threshold;
 		}
 

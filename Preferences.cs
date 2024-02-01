@@ -4,16 +4,19 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
+using ServiceStack;
 
 namespace OctopusAgileNotification
 {
 	partial class Preferences : Form
 	{
 		public event EventHandler<ChangeThresholdEventArgs> ThresholdChanged;
+		private ColourSettings[] thresholdPrefs;
 
 		public Preferences()
 		{
@@ -127,8 +130,20 @@ namespace OctopusAgileNotification
 			// https://api.octopus.energy/v1/products/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-H/standard-unit-rates/?period_from=2024-01-31T15:37:19
 		}
 
+
+
 		private void Preferences_FormClosed(object sender, FormClosedEventArgs e)
 		{
+			var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
+			try
+			{
+				string thresholds = JsonSerializer.Serialize(thresholdPrefs, options);
+				Settings.Default.Thresholds = thresholds;
+			}
+			catch (Exception)
+			{
+				// nothing to do, we'll reset to previous or defaults later
+			}
 		}
 
 		private void Preferences_Load(object sender, EventArgs e)
@@ -137,23 +152,55 @@ namespace OctopusAgileNotification
 			textTariff.Text = Settings.Default.TariffCode;
 
 			// load thresholds
+			try
+			{
+				var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
+				thresholdPrefs = JsonSerializer.Deserialize<ColourSettings[]>(Settings.Default.Thresholds, options);
+			}
+			catch (Exception)
+			{
+				// set defaults
+				thresholdPrefs =
+				[
+					new ColourSettings() { backColour = Color.Blue, textColour = Color.White, threshold = 0 },
+					new ColourSettings() { backColour = Color.Transparent, textColour = Color.Green, threshold = 15 },
+					new ColourSettings() { backColour = Color.Orange, textColour = Color.Black, threshold = 24 },
+					new ColourSettings() { backColour = Color.Red, textColour = Color.White, threshold = 999 },
+				];              
+			}
 
+			// update controls
+			textBoxThreshold0.Text = thresholdPrefs[0].threshold.ToString();
+			btnColourFg0.BackColor = thresholdPrefs[0].textColour;
+			btnColourBg0.BackColor = thresholdPrefs[0].backColour;
+			textBoxThreshold1.Text = thresholdPrefs[1].threshold.ToString();
+			btnColourFg1.BackColor = thresholdPrefs[1].textColour;
+			btnColourBg1.BackColor = thresholdPrefs[1].backColour;
+			textBoxThreshold2.Text = thresholdPrefs[2].threshold.ToString();
+			btnColourFg2.BackColor = thresholdPrefs[2].textColour;
+			btnColourBg2.BackColor = thresholdPrefs[2].backColour;
+			textBoxThreshold3.Text = thresholdPrefs[3].threshold.ToString();
+			btnColourFg3.BackColor = thresholdPrefs[3].textColour;
+			btnColourBg3.BackColor = thresholdPrefs[3].backColour;
 		}
 
 
 
 		private void textBoxThreshold0_TextChanged(object sender, EventArgs e)
 		{
+			thresholdPrefs[0].threshold = ((TextBox)sender).Text.ToInt();
 			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(0, ((TextBox)sender).Text, null, null));
 		}
 
 		private void textBoxThreshold1_TextChanged(object sender, EventArgs e)
 		{
+			thresholdPrefs[1].threshold = ((TextBox)sender).Text.ToInt();
 			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(1, ((TextBox)sender).Text, null, null));
 		}
 
 		private void textBoxThreshold2_TextChanged(object sender, EventArgs e)
 		{
+			thresholdPrefs[2].threshold = ((TextBox)sender).Text.ToInt();
 			ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(2, ((TextBox)sender).Text, null, null));
 		}
 
@@ -163,6 +210,7 @@ namespace OctopusAgileNotification
 			ColorDialog dlg = new ColorDialog();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
+				thresholdPrefs[lev].backColour = dlg.Color;
 				((Button)sender).BackColor = dlg.Color;
 				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, null, dlg.Color));
 			}
@@ -172,7 +220,8 @@ namespace OctopusAgileNotification
 			ColorDialog dlg = new ColorDialog();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
-				((Button)sender).BackColor = dlg.Color;
+				thresholdPrefs[lev].textColour = dlg.Color;
+				((Button)sender).ForeColor = dlg.Color;
 				ThresholdChanged.Invoke(this, new ChangeThresholdEventArgs(lev, null, dlg.Color, null));
 			}
 		}

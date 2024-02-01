@@ -207,6 +207,7 @@
 			btnColourFg0.Size = new System.Drawing.Size(28, 23);
 			btnColourFg0.TabIndex = 25;
 			btnColourFg0.Tag = "0";
+			btnColourFg0.Text = "T";
 			btnColourFg0.UseVisualStyleBackColor = true;
 			btnColourFg0.Click += btnColourFg0_Click;
 			// 
@@ -227,6 +228,7 @@
 			btnColourBg0.Size = new System.Drawing.Size(28, 23);
 			btnColourBg0.TabIndex = 27;
 			btnColourBg0.Tag = "0";
+			btnColourBg0.Text = "B";
 			btnColourBg0.UseVisualStyleBackColor = true;
 			btnColourBg0.Click += btnColourBg0_Click;
 			// 
@@ -247,6 +249,7 @@
 			btnColourFg1.Size = new System.Drawing.Size(28, 23);
 			btnColourFg1.TabIndex = 29;
 			btnColourFg1.Tag = "1";
+			btnColourFg1.Text = "T";
 			btnColourFg1.UseVisualStyleBackColor = true;
 			btnColourFg1.Click += btnColourFg1_Click;
 			// 
@@ -257,6 +260,7 @@
 			btnColourBg1.Size = new System.Drawing.Size(28, 23);
 			btnColourBg1.TabIndex = 30;
 			btnColourBg1.Tag = "1";
+			btnColourBg1.Text = "B";
 			btnColourBg1.UseVisualStyleBackColor = true;
 			btnColourBg1.Click += btnColourBg1_Click;
 			// 
@@ -277,6 +281,7 @@
 			btnColourFg2.Size = new System.Drawing.Size(28, 23);
 			btnColourFg2.TabIndex = 32;
 			btnColourFg2.Tag = "2";
+			btnColourFg2.Text = "T";
 			btnColourFg2.UseVisualStyleBackColor = true;
 			btnColourFg2.Click += btnColourFg2_Click;
 			// 
@@ -287,6 +292,7 @@
 			btnColourBg2.Size = new System.Drawing.Size(28, 23);
 			btnColourBg2.TabIndex = 33;
 			btnColourBg2.Tag = "2";
+			btnColourBg2.Text = "B";
 			btnColourBg2.UseVisualStyleBackColor = true;
 			btnColourBg2.Click += btnColourBg2_Click;
 			// 
@@ -297,6 +303,7 @@
 			btnColourFg3.Size = new System.Drawing.Size(28, 23);
 			btnColourFg3.TabIndex = 35;
 			btnColourFg3.Tag = "3";
+			btnColourFg3.Text = "T";
 			btnColourFg3.UseVisualStyleBackColor = true;
 			btnColourFg3.Click += btnColourFg3_Click;
 			// 
@@ -307,6 +314,7 @@
 			btnColourBg3.Size = new System.Drawing.Size(28, 23);
 			btnColourBg3.TabIndex = 36;
 			btnColourBg3.Tag = "3";
+			btnColourBg3.Text = "B";
 			btnColourBg3.UseVisualStyleBackColor = true;
 			btnColourBg3.Click += btnColourBg3_Click;
 			// 

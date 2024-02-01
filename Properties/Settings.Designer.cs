@@ -58,5 +58,20 @@ namespace OctopusAgileNotification.Properties {
                 this["TariffCode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[{\"textColour\":\"-1\",\"backColour\":\"-16776961\",\"threshold\":0},{\"textColour\":\"-16744" +
+            "448\",\"backColour\":\"16777215\",\"threshold\":15},{\"textColour\":\"-16777216\",\"backColo" +
+            "ur\":\"-32768\",\"threshold\":24},{\"textColour\":\"-1\",\"backColour\":\"-65536\",\"threshold" +
+            "\":999}]")]
+        public string Thresholds {
+            get {
+                return ((string)(this["Thresholds"]));
+            }
+            set {
+                this["Thresholds"] = value;
+            }
+        }
     }
 }
