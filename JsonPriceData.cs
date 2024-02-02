@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OctopusAgileNotification
 {
-	internal class JsonPriceOverview
+	public class JsonPriceOverview
 	{
 		public int count { get; set; }
 		public string next { get; set; }
@@ -14,7 +14,7 @@ namespace OctopusAgileNotification
 		public List<JsonPriceData> results { get; set; }
 	}
 
-	internal class JsonPriceData
+	public class JsonPriceData
 	{
 		public float value_exc_vat { get; set; }
 		public float value_inc_vat { get; set; }

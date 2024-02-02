@@ -15,6 +15,8 @@ namespace OctopusAgileNotification
 
 		private readonly PriceFetch dataFetcher;
 		private readonly TrayIcon trayIcon;
+		private PriceList priceForm = null;
+
 
 		public NotifyContext()
 		{
@@ -24,7 +26,9 @@ namespace OctopusAgileNotification
 			dataFetcher = new PriceFetch();
 			trayIcon = new TrayIcon();
 
-			if (dataFetcher.GetPrices())
+			trayIcon.MouseClick += new MouseEventHandler(this.TrayIconClick);
+
+			if (dataFetcher.FetchPrices())
 				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
 
 			timerNext30.Interval = GetNext30MinInMs();
@@ -36,6 +40,24 @@ namespace OctopusAgileNotification
 			timerRefreshPrices.AutoReset = false;
 			timerRefreshPrices.Elapsed += TimerRefreshPrices_Elapsed;
 			timerRefreshPrices.Start();
+		}
+
+
+		private void TrayIconClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				if (priceForm == null)
+				{
+					priceForm = new(dataFetcher.GetPrices());
+					priceForm.Show();
+				}
+				else
+				{
+					priceForm.Close();
+					priceForm = null;
+				}
+			}
 		}
 
 
@@ -63,7 +85,7 @@ namespace OctopusAgileNotification
 		// If we fail to dataFetcher new ones, try again in an hour, otherwise wait until tomorrow's update
 		private void TimerRefreshPrices_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			if (dataFetcher.GetPrices())
+			if (dataFetcher.FetchPrices())
 				timerRefreshPrices.Interval = GetNext4pmInMs();
 			else
 				timerRefreshPrices.Interval = 60 * 60 * 1000; // 1 hr in milliseconds
@@ -89,7 +111,7 @@ namespace OctopusAgileNotification
 					timerNext30.Interval = GetNext30MinInMs();
 					timerRefreshPrices.Interval = GetNext4pmInMs();
 					if (dataFetcher.GetCurrentPrice() == 0)
-						dataFetcher.GetPrices();
+						dataFetcher.FetchPrices();
 					trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
 					break;
 				case PowerModes.Suspend:
@@ -107,6 +129,7 @@ namespace OctopusAgileNotification
 
 			trayIcon.Dispose();
 
+			trayIcon.MouseClick -= new MouseEventHandler(this.TrayIconClick);
 			SystemEvents.PowerModeChanged -= OnPowerChange;
 			Application.ApplicationExit -= new EventHandler(this.OnApplicationExit);
 		}

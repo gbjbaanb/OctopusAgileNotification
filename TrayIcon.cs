@@ -26,9 +26,16 @@ namespace OctopusAgileNotification
 		private readonly NotifyIcon notifyIcon;
 		private bool disposedValue;
 
-		private ColourSettings[] colours;
-		private Font thresholdFont;
+		private readonly Thresholds thresholds;
 		private float currentPrice;
+
+		// propagate mouseclicks up to the parent
+		public event MouseEventHandler MouseClick
+		{
+			add { this.notifyIcon.MouseClick += value; }
+			remove { this.notifyIcon.MouseClick -= value; }
+		}
+
 
 		public TrayIcon()
 		{
@@ -45,45 +52,7 @@ namespace OctopusAgileNotification
 				Visible = true,
 			};
 
-			notifyIcon.Click += new EventHandler(Click);
-
-			try
-			{
-				var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
-				colours = JsonSerializer.Deserialize<ColourSettings[]>(Settings.Default.Thresholds, options);
-			}
-			catch (Exception)
-			{
-				// set defaults
-				colours =
-				[
-					new ColourSettings() { backColour = Color.Blue, textColour = Color.White, threshold = 0 },
-					new ColourSettings() { backColour = Color.Transparent, textColour = Color.Green, threshold = 15 },
-					new ColourSettings() { backColour = Color.Orange, textColour = Color.Black, threshold = 24 },
-					new ColourSettings() { backColour = Color.Red, textColour = Color.White, threshold = 999 },
-				];
-			}
-
-			try
-			{
-				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
-				thresholdFont = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);
-			}
-			catch (Exception)
-			{
-				thresholdFont = new Font("Segoe UI", SystemInformation.IconSize.Height * 8 / 10, FontStyle.Regular, GraphicsUnit.Pixel);
-			}
-		}
-
-
-		private ColourSettings GetColours(float price)
-		{
-			foreach (var c in colours)
-			{
-				if (c.threshold >= price)
-					return c;
-			}
-			return colours[0];
+			thresholds = new Thresholds();
 		}
 
 
@@ -91,7 +60,7 @@ namespace OctopusAgileNotification
 		public void SetTextIcon(float price)
 		{
 			currentPrice = price;
-			ColourSettings currentColour = GetColours(price);
+			ColourSettings currentColour = thresholds.GetColours(price);
 
 			notifyIcon.Text = $"{price:F2}p";
 
@@ -101,7 +70,7 @@ namespace OctopusAgileNotification
 
 			g.Clear(currentColour.backColour);
 			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-			g.DrawString(Math.Round(price).ToString("F0"), thresholdFont, brushToUse, 0, 0);
+			g.DrawString(Math.Round(price).ToString("F0"), thresholds.GetFont(), brushToUse, 0, 0);
 
 			// get the icon via Win32, clone it to be managed and then destroy our original
 			IntPtr hIcon = bitmapText.GetHicon();
@@ -113,34 +82,12 @@ namespace OctopusAgileNotification
 		}
 
 
-		void Click(object sender, EventArgs e)
-		{
-			/*			System.Drawing.Size windowSize = SystemInformation.PrimaryMonitorMaximizedWindowSize;
-						System.Drawing.Point menuPoint = new System.Drawing.Point(windowSize.Width - 180, windowSize.Height - 5);
-						menuPoint = this.PointToClient(menuPoint);
-						NotifyIcon1.ContextMenu.Show(this, menuPoint);*/
-
-		}
-
-
 		void ChangeSettings(object sender, EventArgs e)
 		{
 			Preferences settingsForm = new Preferences();
 			settingsForm.ShowDialog();
 
-			// fetch the changes from global settings
-			try
-			{
-				var options = new JsonSerializerOptions() { Converters = { new ColorJsonConverter() } };
-				colours = JsonSerializer.Deserialize<ColourSettings[]>(Settings.Default.Thresholds, options);
-
-				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
-				thresholdFont = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);
-			}
-			catch (Exception)
-			{
-				// ignore and leave previous values
-			}
+			thresholds.Refresh();
 
 			SetTextIcon(currentPrice);
 		}
@@ -148,7 +95,6 @@ namespace OctopusAgileNotification
 
 		public void Exit(object sender, EventArgs e)
 		{
-			thresholdFont.Dispose();
 			Application.Exit();
 		}
 
@@ -161,7 +107,6 @@ namespace OctopusAgileNotification
 			{
 				if (disposing)
 				{
-					notifyIcon.Click -= new EventHandler(Click);
 					notifyIcon.Visible = false;
 					notifyIcon.Dispose();
 				}

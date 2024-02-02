@@ -27,7 +27,7 @@ namespace OctopusAgileNotification
 
 
 		// returns true if prices were fetched and changed from previous set
-		public bool GetPrices()
+		public bool FetchPrices()
 		{
 			bool ret = false;
 			
@@ -69,6 +69,11 @@ namespace OctopusAgileNotification
 		public float GetCurrentPrice()
 		{
 			return prices.results.SingleOrDefault(i => i.valid_from <= DateTime.Now && i.valid_to > DateTime.Now)?.value_inc_vat ?? 0;
+		}
+
+		public JsonPriceOverview GetPrices()
+		{
+			return prices;
 		}
 	}
 }
