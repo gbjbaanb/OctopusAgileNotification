@@ -16,7 +16,7 @@ namespace OctopusAgileNotification
 	partial class Preferences : Form
 	{
 		private ColourSettings[] thresholdPrefs;
-		private Font thresholdFont;
+		private Font thresholdFont = null;
 
 		public Preferences()
 		{
@@ -150,7 +150,8 @@ namespace OctopusAgileNotification
 
 			if (fnt.ShowDialog() == DialogResult.OK)
 			{
-				thresholdFont = fnt.Font;
+				if (fnt.Font != null)
+					thresholdFont = fnt.Font;
 			}
 		}
 
@@ -163,8 +164,11 @@ namespace OctopusAgileNotification
 				string thresholds = JsonSerializer.Serialize(thresholdPrefs, options);
 				Settings.Default.Thresholds = thresholds;
 
-				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
-				Settings.Default.Font = cvt.ConvertToInvariantString(thresholdFont);
+				if (thresholdFont != null)
+				{
+					TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
+					Settings.Default.Font = cvt.ConvertToInvariantString(thresholdFont);
+				}
 			}
 			catch (Exception)
 			{
