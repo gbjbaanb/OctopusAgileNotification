@@ -53,7 +53,7 @@ namespace OctopusAgileNotification
 			// check the next 4pm which may be today if the PC has been asleep too long.
 			DateTime tomorrow = DateTime.Now;
 			if (DateTime.Now.TimeOfDay >= new TimeSpan(16,0,0))
-				tomorrow.AddDays(1);
+				tomorrow = tomorrow.AddDays(1);
 			DateTime tomorrow4PM = new DateTime(new DateOnly(tomorrow.Year, tomorrow.Month, tomorrow.Day), new TimeOnly(16, 1), DateTimeKind.Local);
 			return tomorrow4PM.Subtract(DateTime.Now).TotalMilliseconds;
 		}
