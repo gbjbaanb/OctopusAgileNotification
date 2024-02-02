@@ -34,7 +34,7 @@ namespace OctopusAgileNotification
 			try
 			{
 				using var task = _httpClient.GetAsync($"{ProductCode}//electricity-tariffs/{TariffCode}/standard-unit-rates/?period_from={DateTime.Now:s}");
-				if (!task.Wait(5000))
+				if (!task.Wait(10000))
 					return false;
 
 				if (task.IsCompletedSuccessfully)

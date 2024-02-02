@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 
 namespace OctopusAgileNotification
@@ -18,20 +19,15 @@ namespace OctopusAgileNotification
 		public NotifyContext()
 		{
 			Application.ApplicationExit += new EventHandler(this.OnApplicationExit);
+			SystemEvents.PowerModeChanged += OnPowerChange;
 
 			dataFetcher = new PriceFetch();
 			trayIcon = new TrayIcon();
 
-			dataFetcher.GetPrices();
+			if (dataFetcher.GetPrices())
+				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
 
-			trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
-
-			// set the next time to trigger at the 30-min or 60-min mark. 
-			int Next30 = 60 - DateTime.Now.Minute;
-			if (Next30 > 30)
-				Next30 -= 30;
-
-			timerNext30.Interval = new TimeSpan(0, Next30, 0).TotalMilliseconds;
+			timerNext30.Interval = GetNext30MinInMs();
 			timerNext30.AutoReset = false;
 			timerNext30.Elapsed += TimerNext30_Elapsed;
 			timerNext30.Start();
@@ -43,9 +39,21 @@ namespace OctopusAgileNotification
 		}
 
 
+		private static double GetNext30MinInMs()
+		{
+			// set the next time to trigger at the 30-min or 60-min mark. 
+			int Next30 = 60 - DateTime.Now.Minute;
+			if (Next30 > 30)
+				Next30 -= 30;
+			return Next30 * 60 * 1000;
+		}
+
 		private static double GetNext4pmInMs()
 		{
-			DateTime tomorrow = DateTime.Now.AddDays(1);
+			// check the next 4pm which may be today if the PC has been asleep too long.
+			DateTime tomorrow = DateTime.Now;
+			if (DateTime.Now.TimeOfDay >= new TimeSpan(16,0,0))
+				tomorrow.AddDays(1);
 			DateTime tomorrow4PM = new DateTime(new DateOnly(tomorrow.Year, tomorrow.Month, tomorrow.Day), new TimeOnly(16, 1), DateTimeKind.Local);
 			return tomorrow4PM.Subtract(DateTime.Now).TotalMilliseconds;
 		}
@@ -71,7 +79,24 @@ namespace OctopusAgileNotification
 			timerNext30.Start();
 		}
 
-		
+
+		private void OnPowerChange(object s, PowerModeChangedEventArgs e)
+		{
+			switch (e.Mode)
+			{
+				case PowerModes.Resume:
+					// reset the timers and update the current display
+					timerNext30.Interval = GetNext30MinInMs();
+					timerRefreshPrices.Interval = GetNext4pmInMs();
+					if (dataFetcher.GetCurrentPrice() == 0)
+						dataFetcher.GetPrices();
+					trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+					break;
+				case PowerModes.Suspend:
+					break;
+			}
+		}
+
 
 		public void OnApplicationExit(object sender, EventArgs e)
 		{
@@ -82,6 +107,7 @@ namespace OctopusAgileNotification
 
 			trayIcon.Dispose();
 
+			SystemEvents.PowerModeChanged -= OnPowerChange;
 			Application.ApplicationExit -= new EventHandler(this.OnApplicationExit);
 		}
 
