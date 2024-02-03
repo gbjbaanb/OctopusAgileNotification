@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -51,6 +49,7 @@ namespace OctopusAgileNotification
 				{
 					priceForm = new(dataFetcher.GetPrices());
 					priceForm.Show();
+					priceForm.ActiveControl = null;
 				}
 				else
 				{
