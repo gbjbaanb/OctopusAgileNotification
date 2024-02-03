@@ -9,8 +9,7 @@ namespace OctopusAgileNotification
 	public partial class PriceList : Form
 	{
 		static Color taskbarColour = WinColours.GetColourAt(WinColours.GetTaskbarPosition().Location);
-		//static Color taskbarContrast = WinColours.CalcContrastColor(taskbarColour);
-		static Color taskbarContrast = WinColours.GetContrastingColor(taskbarColour);
+		static Color taskbarContrast = WinColours.GetContrastingColor(taskbarColour); // or CalcContrastColor(taskbarColour);
 
 		public PriceList(JsonPriceOverview prices)
 		{
@@ -66,5 +65,29 @@ namespace OctopusAgileNotification
 		}
 
 
+		// drag the form about (as the listview is full-fill, use its events)
+		private bool mouseDown = false;
+		private Point lastLocation;
+
+		private void listViewPrices_MouseDown(object sender, MouseEventArgs e)
+		{
+			if (e.Clicks == 1)
+				mouseDown = true;
+			lastLocation = e.Location;
+		}
+
+		private void listViewPrices_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (mouseDown)
+			{
+				this.Location = new Point((this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
+				this.Update();
+			}
+		}
+
+		private void listViewPrices_MouseUp(object sender, MouseEventArgs e)
+		{
+			mouseDown = false;
+		}
 	}
 }

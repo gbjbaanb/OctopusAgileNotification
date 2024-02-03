@@ -43,6 +43,7 @@
 			listViewPrices.Dock = System.Windows.Forms.DockStyle.Fill;
 			listViewPrices.FullRowSelect = true;
 			listViewPrices.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+			listViewPrices.HideSelection = true;
 			listViewPrices.Location = new System.Drawing.Point(2, 2);
 			listViewPrices.MultiSelect = false;
 			listViewPrices.Name = "listViewPrices";
@@ -51,6 +52,9 @@
 			listViewPrices.TabIndex = 0;
 			listViewPrices.UseCompatibleStateImageBehavior = false;
 			listViewPrices.View = System.Windows.Forms.View.Details;
+			listViewPrices.MouseDown += listViewPrices_MouseDown;
+			listViewPrices.MouseMove += listViewPrices_MouseMove;
+			listViewPrices.MouseUp += listViewPrices_MouseUp;
 			// 
 			// colDate
 			// 
