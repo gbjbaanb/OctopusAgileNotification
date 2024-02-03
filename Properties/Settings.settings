@@ -12,7 +12,7 @@
       <Value Profile="(Default)">E-1R-AGILE-18-02-21-C</Value>
     </Setting>
     <Setting Name="Thresholds" Type="System.String" Scope="User">
-      <Value Profile="(Default)">[{"textColour":"-1","backColour":"-16776961","threshold":0},{"textColour":"-16744448","backColour":"16777215","threshold":15},{"textColour":"-16777216","backColour":"-32768","threshold":24},{"textColour":"-1","backColour":"-65536","threshold":999}]</Value>
+      <Value Profile="(Default)">[{"textColour":"-1","backColour":"-16776961","threshold":0},{"textColour":"-16744448","backColour":"0","threshold":15},{"textColour":"-16777216","backColour":"-32768","threshold":24},{"textColour":"-1","backColour":"-65536","threshold":999}]</Value>
     </Setting>
     <Setting Name="Font" Type="System.String" Scope="User">
       <Value Profile="(Default)">{"[FontFamily: Name=Segoe UI]",18,0}</Value>

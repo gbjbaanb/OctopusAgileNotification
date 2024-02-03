@@ -13,6 +13,7 @@
     <EmbeddedResource Include="Resources\Constantine32.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Cyotek.Windows.Forms.ColorPicker" Version="1.7.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="ServiceStack" Version="8.0.0" />

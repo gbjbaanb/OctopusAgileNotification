@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Cyotek.Windows.Forms;
 using OctopusAgileNotification.Properties;
 using ServiceStack;
 
@@ -228,7 +229,7 @@ namespace OctopusAgileNotification
 
 		private void ClickBackgroundBtn(object sender, int lev)
 		{
-			ColorDialog dlg = new ColorDialog();
+			ColorPickerDialog dlg = new ();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				thresholdPrefs[lev].backColour = dlg.Color;
@@ -237,7 +238,7 @@ namespace OctopusAgileNotification
 		}
 		private void ClickForegroundBtn(object sender, int lev)
 		{
-			ColorDialog dlg = new ColorDialog();
+			ColorPickerDialog dlg = new ();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				thresholdPrefs[lev].textColour = dlg.Color;
