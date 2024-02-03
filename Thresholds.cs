@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
 
@@ -84,13 +80,6 @@ namespace OctopusAgileNotification
 				disposedValue = true;
 			}
 		}
-
-		// // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-		// ~Thresholds()
-		// {
-		//     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-		//     Dispose(disposing: false);
-		// }
 
 		public void Dispose()
 		{

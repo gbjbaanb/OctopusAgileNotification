@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
 using ServiceStack;
@@ -148,11 +145,8 @@ namespace OctopusAgileNotification
 				fnt.Font = new Font("Segoe UI", SystemInformation.IconSize.Height * 8 / 10, FontStyle.Regular, GraphicsUnit.Pixel);
 			}
 
-			if (fnt.ShowDialog() == DialogResult.OK)
-			{
-				if (fnt.Font != null)
-					thresholdFont = fnt.Font;
-			}
+			if (fnt.ShowDialog() == DialogResult.OK && fnt.Font != null)
+				thresholdFont = fnt.Font;
 		}
 
 
