@@ -29,6 +29,7 @@ namespace OctopusAgileNotification
 			if (dataFetcher.FetchPrices())
 				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
 
+			// timer to rupdate the UI with current price
 			timerNext30.Interval = GetNext30MinInMs();
 			timerNext30.AutoReset = false;
 			timerNext30.Elapsed += TimerNext30_Elapsed;
@@ -66,7 +67,7 @@ namespace OctopusAgileNotification
 			int Next30 = 60 - DateTime.Now.Minute;
 			if (Next30 > 30)
 				Next30 -= 30;
-			return Next30 * 60 * 1000;
+			return (Next30 * 60 * 1000) - (DateTime.Now.Second * 1000);
 		}
 
 		private static double GetNext4pmInMs()
