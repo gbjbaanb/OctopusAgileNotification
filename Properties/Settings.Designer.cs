@@ -76,13 +76,49 @@ namespace OctopusAgileNotification.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("{\"[FontFamily: Name=Segoe UI]\",18,0}")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{\"[FontFamily: Name=Consolas]\",20,1}")]
         public string Font {
             get {
                 return ((string)(this["Font"]));
             }
             set {
                 this["Font"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PopupPositionX {
+            get {
+                return ((int)(this["PopupPositionX"]));
+            }
+            set {
+                this["PopupPositionX"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int PopupPositionY {
+            get {
+                return ((int)(this["PopupPositionY"]));
+            }
+            set {
+                this["PopupPositionY"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PersistPosition {
+            get {
+                return ((bool)(this["PersistPosition"]));
+            }
+            set {
+                this["PersistPosition"] = value;
             }
         }
     }

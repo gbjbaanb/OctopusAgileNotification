@@ -175,6 +175,7 @@ namespace OctopusAgileNotification
 		{
 			textProduct.Text = Settings.Default.ProductCode;
 			textTariff.Text = Settings.Default.TariffCode;
+			chkPersistPosition.Checked = Settings.Default.PersistPosition;
 
 			// load thresholds
 			try
@@ -229,7 +230,7 @@ namespace OctopusAgileNotification
 
 		private void ClickBackgroundBtn(object sender, int lev)
 		{
-			ColorPickerDialog dlg = new ();
+			ColorPickerDialog dlg = new();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				thresholdPrefs[lev].backColour = dlg.Color;
@@ -238,7 +239,7 @@ namespace OctopusAgileNotification
 		}
 		private void ClickForegroundBtn(object sender, int lev)
 		{
-			ColorPickerDialog dlg = new ();
+			ColorPickerDialog dlg = new();
 			if (dlg.ShowDialog() == DialogResult.OK)
 			{
 				thresholdPrefs[lev].textColour = dlg.Color;
@@ -255,5 +256,9 @@ namespace OctopusAgileNotification
 		private void btnColourFg3_Click(object sender, EventArgs e) { ClickForegroundBtn(sender, 3); }
 		private void btnColourBg3_Click(object sender, EventArgs e) { ClickBackgroundBtn(sender, 3); }
 
+		private void chkPersistPosition_CheckedChanged(object sender, EventArgs e)
+		{
+			Settings.Default.PersistPosition = chkPersistPosition.Checked;
+		}
 	}
 }

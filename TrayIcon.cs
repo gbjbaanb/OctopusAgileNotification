@@ -70,7 +70,7 @@ namespace OctopusAgileNotification
 
 			g.Clear(currentColour.backColour);
 			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-			g.DrawString(Math.Round(price).ToString("F0"), thresholds.GetFont(), brushToUse, 0, 0);
+			g.DrawString(Math.Round(price).ToString("F0"), thresholds.GetFont(), brushToUse, 0, 1);
 
 			// get the icon via Win32, clone it to be managed and then destroy our original
 			IntPtr hIcon = bitmapText.GetHicon();

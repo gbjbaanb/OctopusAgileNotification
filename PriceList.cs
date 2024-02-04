@@ -3,6 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using OctopusAgileNotification.Properties;
 
 namespace OctopusAgileNotification
 {
@@ -61,7 +62,10 @@ namespace OctopusAgileNotification
 					(lastItem.Bounds.Height * listViewPrices.Items.Count) + this.Padding.Size.Height);
 			}
 
-			this.Location = new Point(MousePosition.X - this.Width / 2, MousePosition.Y - this.Height - SystemInformation.IconSize.Height);
+			if (Settings.Default.PersistPosition)
+				this.Location = new Point(Settings.Default.PopupPositionX - this.Width, Settings.Default.PopupPositionY - this.Height);
+			else
+				this.Location = new Point(MousePosition.X - this.Width / 2, MousePosition.Y - this.Height - SystemInformation.IconSize.Height);
 		}
 
 
@@ -88,6 +92,12 @@ namespace OctopusAgileNotification
 		private void listViewPrices_MouseUp(object sender, MouseEventArgs e)
 		{
 			mouseDown = false;
+			if (Settings.Default.PersistPosition)
+			{
+				// track the bottom right corner as the size will change.
+				Settings.Default.PopupPositionX = this.Location.X + this.Width;
+				Settings.Default.PopupPositionY = this.Location.Y + this.Height;
+			}
 		}
 	}
 }

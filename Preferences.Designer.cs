@@ -52,7 +52,9 @@
 			btnColourBg3 = new System.Windows.Forms.Button();
 			textBoxThreshold3 = new System.Windows.Forms.TextBox();
 			groupBoxThresholds = new System.Windows.Forms.GroupBox();
+			label1 = new System.Windows.Forms.Label();
 			btnFont = new System.Windows.Forms.Button();
+			chkPersistPosition = new System.Windows.Forms.CheckBox();
 			tableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)logoPictureBox).BeginInit();
 			groupBoxThresholds.SuspendLayout();
@@ -194,7 +196,7 @@
 			// 
 			okButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
 			okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			okButton.Location = new System.Drawing.Point(431, 277);
+			okButton.Location = new System.Drawing.Point(431, 326);
 			okButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			okButton.Name = "okButton";
 			okButton.Size = new System.Drawing.Size(66, 27);
@@ -332,6 +334,7 @@
 			// 
 			// groupBoxThresholds
 			// 
+			groupBoxThresholds.Controls.Add(label1);
 			groupBoxThresholds.Controls.Add(btnFont);
 			groupBoxThresholds.Controls.Add(textBoxThreshold1);
 			groupBoxThresholds.Controls.Add(btnColourFg3);
@@ -346,10 +349,19 @@
 			groupBoxThresholds.Controls.Add(btnColourFg1);
 			groupBoxThresholds.Location = new System.Drawing.Point(14, 223);
 			groupBoxThresholds.Name = "groupBoxThresholds";
-			groupBoxThresholds.Size = new System.Drawing.Size(389, 82);
+			groupBoxThresholds.Size = new System.Drawing.Size(389, 105);
 			groupBoxThresholds.TabIndex = 37;
 			groupBoxThresholds.TabStop = false;
 			groupBoxThresholds.Text = "Thresholds";
+			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new System.Drawing.Point(9, 79);
+			label1.Name = "label1";
+			label1.Size = new System.Drawing.Size(359, 15);
+			label1.TabIndex = 38;
+			label1.Text = "set text and background colours for the shown temperature ranges";
 			// 
 			// btnFont
 			// 
@@ -361,12 +373,24 @@
 			btnFont.UseVisualStyleBackColor = true;
 			btnFont.Click += btnFont_Click;
 			// 
+			// chkPersistPosition
+			// 
+			chkPersistPosition.AutoSize = true;
+			chkPersistPosition.Location = new System.Drawing.Point(23, 334);
+			chkPersistPosition.Name = "chkPersistPosition";
+			chkPersistPosition.Size = new System.Drawing.Size(144, 19);
+			chkPersistPosition.TabIndex = 38;
+			chkPersistPosition.Text = "Persist Popup Position";
+			chkPersistPosition.UseVisualStyleBackColor = true;
+			chkPersistPosition.CheckedChanged += chkPersistPosition_CheckedChanged;
+			// 
 			// Preferences
 			// 
 			AcceptButton = okButton;
 			AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			ClientSize = new System.Drawing.Size(507, 314);
+			ClientSize = new System.Drawing.Size(507, 363);
+			Controls.Add(chkPersistPosition);
 			Controls.Add(textBoxThreshold3);
 			Controls.Add(okButton);
 			Controls.Add(tableLayoutPanel);
@@ -419,5 +443,7 @@
 		private System.Windows.Forms.TextBox textBoxThreshold3;
 		private System.Windows.Forms.GroupBox groupBoxThresholds;
 		private System.Windows.Forms.Button btnFont;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.CheckBox chkPersistPosition;
 	}
 }
