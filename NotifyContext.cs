@@ -2,6 +2,7 @@
 using System.Timers;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using OctopusAgileNotification.Properties;
 
 
 namespace OctopusAgileNotification
@@ -51,6 +52,8 @@ namespace OctopusAgileNotification
 					priceForm = new(dataFetcher.GetPrices());
 					priceForm.Show();
 					priceForm.ActiveControl = null;
+					if (!Settings.Default.ClickToClose)
+						priceForm.LostFocus += new EventHandler(LostFocus);
 				}
 				else
 				{
@@ -58,6 +61,15 @@ namespace OctopusAgileNotification
 					priceForm = null;
 				}
 			}
+		}
+
+		private void LostFocus(object sender, EventArgs e)
+		{
+			Form f = sender as Form;
+			priceForm.LostFocus -= new EventHandler(LostFocus);
+			f.Close();
+			f.Dispose();
+			priceForm = null;
 		}
 
 

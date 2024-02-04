@@ -121,5 +121,17 @@ namespace OctopusAgileNotification.Properties {
                 this["PersistPosition"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ClickToClose {
+            get {
+                return ((bool)(this["ClickToClose"]));
+            }
+            set {
+                this["ClickToClose"] = value;
+            }
+        }
     }
 }

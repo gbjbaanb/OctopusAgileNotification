@@ -55,6 +55,7 @@
 			label1 = new System.Windows.Forms.Label();
 			btnFont = new System.Windows.Forms.Button();
 			chkPersistPosition = new System.Windows.Forms.CheckBox();
+			chkClickClose = new System.Windows.Forms.CheckBox();
 			tableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)logoPictureBox).BeginInit();
 			groupBoxThresholds.SuspendLayout();
@@ -384,12 +385,23 @@
 			chkPersistPosition.UseVisualStyleBackColor = true;
 			chkPersistPosition.CheckedChanged += chkPersistPosition_CheckedChanged;
 			// 
+			// chkClickClose
+			// 
+			chkClickClose.AutoSize = true;
+			chkClickClose.Location = new System.Drawing.Point(173, 334);
+			chkClickClose.Name = "chkClickClose";
+			chkClickClose.Size = new System.Drawing.Size(98, 19);
+			chkClickClose.TabIndex = 39;
+			chkClickClose.Text = "Persist Popup";
+			chkClickClose.UseVisualStyleBackColor = true;
+			// 
 			// Preferences
 			// 
 			AcceptButton = okButton;
 			AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			ClientSize = new System.Drawing.Size(507, 363);
+			Controls.Add(chkClickClose);
 			Controls.Add(chkPersistPosition);
 			Controls.Add(textBoxThreshold3);
 			Controls.Add(okButton);
@@ -445,5 +457,6 @@
 		private System.Windows.Forms.Button btnFont;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.CheckBox chkPersistPosition;
+		private System.Windows.Forms.CheckBox chkClickClose;
 	}
 }

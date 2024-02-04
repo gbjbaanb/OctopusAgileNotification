@@ -131,7 +131,7 @@ namespace OctopusAgileNotification
 
 		private void btnFont_Click(object sender, EventArgs e)
 		{
-			FontDialog fnt = new FontDialog();
+			FontDialog fnt = new();
 			fnt.ShowEffects = false;
 			fnt.FontMustExist = true;
 
@@ -176,6 +176,7 @@ namespace OctopusAgileNotification
 			textProduct.Text = Settings.Default.ProductCode;
 			textTariff.Text = Settings.Default.TariffCode;
 			chkPersistPosition.Checked = Settings.Default.PersistPosition;
+			chkClickClose.Checked = Settings.Default.ClickToClose;
 
 			// load thresholds
 			try
