@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
-using ServiceStack;
+using System.Net.Http;
 
 namespace OctopusAgileNotification
 {
@@ -9,7 +9,7 @@ namespace OctopusAgileNotification
 	{
 		private JsonPriceOverview prices;
 
-		private readonly System.Net.Http.HttpClient _httpClient;
+		private readonly HttpClient _httpClient;
 		private const string TariffUrl = "https://api.octopus.energy/v1/products/";
 		private const string ProductCode = "AGILE-FLEX-22-11-25";
 		private const string TariffCode = "E-1R-AGILE-FLEX-22-11-25-H";
@@ -33,7 +33,7 @@ namespace OctopusAgileNotification
 
 				if (task.IsCompletedSuccessfully)
 				{
-					var jsonResponse = task.Result.Content.ReadAsString();
+					var jsonResponse = task.Result.Content.ReadAsStringAsync();
 					if (task.Result.IsSuccessStatusCode)
 					{
 						DateTime lastHighestTime = DateTime.Now;
@@ -41,11 +41,15 @@ namespace OctopusAgileNotification
 						{
 							 lastHighestTime = prices.results[0].valid_from;
 						}
-						var newPrices = JsonSerializer.Deserialize<JsonPriceOverview>(jsonResponse);
-						if (newPrices != null && newPrices.results != null && newPrices.results[0].valid_from != lastHighestTime) 
+
+						if (jsonResponse.Wait(10000))
 						{
-							ret = true;
-							prices = newPrices;
+							var newPrices = JsonSerializer.Deserialize<JsonPriceOverview>(jsonResponse.Result);
+							if (newPrices != null && newPrices.results != null && newPrices.results[0].valid_from != lastHighestTime)
+							{
+								ret = true;
+								prices = newPrices;
+							}
 						}
 					}
 					else

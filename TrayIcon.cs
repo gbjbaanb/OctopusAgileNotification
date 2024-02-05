@@ -9,8 +9,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
-using ServiceStack;
-using static ServiceStack.Svg;
 
 namespace OctopusAgileNotification
 {

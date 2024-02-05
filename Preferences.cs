@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Cyotek.Windows.Forms;
 using OctopusAgileNotification.Properties;
-using ServiceStack;
 
 namespace OctopusAgileNotification
 {
@@ -215,17 +214,26 @@ namespace OctopusAgileNotification
 
 		private void textBoxThreshold0_TextChanged(object sender, EventArgs e)
 		{
-			thresholdPrefs[0].threshold = ((TextBox)sender).Text.ToInt();
+			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val > 0)
+			{
+				thresholdPrefs[0].threshold = val;
+			}
 		}
 
 		private void textBoxThreshold1_TextChanged(object sender, EventArgs e)
 		{
-			thresholdPrefs[1].threshold = ((TextBox)sender).Text.ToInt();
+			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val > 0)
+			{
+				thresholdPrefs[1].threshold = val;
+			}
 		}
 
 		private void textBoxThreshold2_TextChanged(object sender, EventArgs e)
 		{
-			thresholdPrefs[2].threshold = ((TextBox)sender).Text.ToInt();
+			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val > 0)
+			{ 
+				thresholdPrefs[2].threshold = val;
+			}
 		}
 
 
