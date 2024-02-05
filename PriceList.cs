@@ -16,7 +16,7 @@ namespace OctopusAgileNotification
 		{
 			InitializeComponent();
 
-			using Thresholds thresholds = new Thresholds();
+			using Thresholds thresholds = new();
 
 			if (WinColours.GetWindowsColorMode() == 0)
 			{
@@ -33,7 +33,7 @@ namespace OctopusAgileNotification
 					ForeColor = thresholds.GetColours(item.value_inc_vat).textColour,
 				};
 
-				ListViewItem i = new ListViewItem()
+				ListViewItem i = new()
 				{
 					Text = $"{item.valid_from:t}",
 					UseItemStyleForSubItems = false,
@@ -52,6 +52,22 @@ namespace OctopusAgileNotification
 			}
 			listViewPrices.EndUpdate();
 
+			ResizeForm();
+
+			// if not persisting, or if form would be off-screen, position by mouse
+			if (!Settings.Default.PersistPosition
+				|| Settings.Default.PopupPositionX < Width || Settings.Default.PopupPositionX > Screen.AllScreens.Sum(i => i.Bounds.Width) + Width
+				|| Settings.Default.PopupPositionY < Height || Settings.Default.PopupPositionY > Screen.AllScreens.Max(i => i.Bounds.Height) + Height)
+			{
+				Location = new Point(MousePosition.X - Width / 2, MousePosition.Y - Height - SystemInformation.IconSize.Height);
+			}
+			else
+				Location = new Point(Settings.Default.PopupPositionX - Width, Settings.Default.PopupPositionY - Height);
+		}
+
+
+		private void ResizeForm()
+		{
 			// resize to fit all prices
 			if (listViewPrices.Items.Count > 0)
 			{
@@ -61,16 +77,6 @@ namespace OctopusAgileNotification
 				ClientSize = new Size(listViewPrices.Columns[0].Width + listViewPrices.Columns[1].Width + Padding.Size.Width,
 					(lastItem.Bounds.Height * listViewPrices.Items.Count) + Padding.Size.Height);
 			}
-
-			// if not persisting, or if form would be off-screen, position by mouse
-			if (!Settings.Default.PersistPosition 
-				|| Settings.Default.PopupPositionX < Width || Settings.Default.PopupPositionX > Screen.PrimaryScreen.Bounds.Width + Width
-				|| Settings.Default.PopupPositionY < Height || Settings.Default.PopupPositionY > Screen.PrimaryScreen.Bounds.Height + Height)
-			{
-				Location = new Point(MousePosition.X - Width / 2, MousePosition.Y - Height - SystemInformation.IconSize.Height);
-			}
-			else
-				Location = new Point(Settings.Default.PopupPositionX - Width, Settings.Default.PopupPositionY - Height);
 		}
 
 
