@@ -14,7 +14,7 @@ namespace OctopusAgileNotification
 
 		private readonly PriceFetch dataFetcher;
 		private readonly TrayIcon trayIcon;
-		private PriceList priceForm = null;
+		private PriceList priceList = null;
 
 
 		public NotifyContext()
@@ -47,18 +47,18 @@ namespace OctopusAgileNotification
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				if (priceForm == null)
+				if (priceList == null)
 				{
-					priceForm = new(dataFetcher.GetPrices());
-					priceForm.Show();
-					priceForm.ActiveControl = null;
+					priceList = new(dataFetcher.GetPrices());
+					priceList.Show();
+					priceList.ActiveControl = null;
 					if (!Settings.Default.ClickToClose)
-						priceForm.LostFocus += new EventHandler(LostFocus);
+						priceList.LostFocus += new EventHandler(LostFocus);
 				}
 				else
 				{
-					priceForm.Close();
-					priceForm = null;
+					priceList.Close();
+					priceList = null;
 				}
 			}
 		}
@@ -66,10 +66,10 @@ namespace OctopusAgileNotification
 		private void LostFocus(object sender, EventArgs e)
 		{
 			Form f = sender as Form;
-			priceForm.LostFocus -= new EventHandler(LostFocus);
+			priceList.LostFocus -= new EventHandler(LostFocus);
 			f.Close();
 			f.Dispose();
-			priceForm = null;
+			priceList = null;
 		}
 
 
