@@ -88,7 +88,7 @@ namespace OctopusAgileNotification.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("999")]
         public int PopupPositionX {
             get {
                 return ((int)(this["PopupPositionX"]));
@@ -100,7 +100,7 @@ namespace OctopusAgileNotification.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("999")]
         public int PopupPositionY {
             get {
                 return ((int)(this["PopupPositionY"]));

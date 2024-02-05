@@ -18,10 +18,10 @@
       <Value Profile="(Default)">{"[FontFamily: Name=Consolas]",20,1}</Value>
     </Setting>
     <Setting Name="PopupPositionX" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">999</Value>
     </Setting>
     <Setting Name="PopupPositionY" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">999</Value>
     </Setting>
     <Setting Name="PersistPosition" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

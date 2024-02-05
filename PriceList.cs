@@ -62,10 +62,15 @@ namespace OctopusAgileNotification
 					(lastItem.Bounds.Height * listViewPrices.Items.Count) + this.Padding.Size.Height);
 			}
 
-			if (Settings.Default.PersistPosition)
-				this.Location = new Point(Settings.Default.PopupPositionX - this.Width, Settings.Default.PopupPositionY - this.Height);
-			else
+			// if not persisting, or if form would be off-screen, position by mouse
+			if (!Settings.Default.PersistPosition 
+				|| Settings.Default.PopupPositionX < this.Width || Settings.Default.PopupPositionX > Screen.PrimaryScreen.Bounds.Width + this.Width
+				|| Settings.Default.PopupPositionY < this.Height || Settings.Default.PopupPositionY > Screen.PrimaryScreen.Bounds.Height + this.Height)
+			{
 				this.Location = new Point(MousePosition.X - this.Width / 2, MousePosition.Y - this.Height - SystemInformation.IconSize.Height);
+			}
+			else
+				this.Location = new Point(Settings.Default.PopupPositionX - this.Width, Settings.Default.PopupPositionY - this.Height);
 		}
 
 
