@@ -20,7 +20,7 @@ namespace OctopusAgileNotification
 
 			if (WinColours.GetWindowsColorMode() == 0)
 			{
-				this.BackColor = listViewPrices.BackColor = taskbarColour;
+				BackColor = listViewPrices.BackColor = taskbarColour;
 			}
 
 			listViewPrices.BeginUpdate();
@@ -57,20 +57,20 @@ namespace OctopusAgileNotification
 			{
 				listViewPrices.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 				var lastItem = listViewPrices.Items[0];
-				this.MinimumSize = new Size(10, 10);
-				this.ClientSize = new Size(listViewPrices.Columns[0].Width + listViewPrices.Columns[1].Width + this.Padding.Size.Width,
-					(lastItem.Bounds.Height * listViewPrices.Items.Count) + this.Padding.Size.Height);
+				MinimumSize = new Size(10, 10);
+				ClientSize = new Size(listViewPrices.Columns[0].Width + listViewPrices.Columns[1].Width + Padding.Size.Width,
+					(lastItem.Bounds.Height * listViewPrices.Items.Count) + Padding.Size.Height);
 			}
 
 			// if not persisting, or if form would be off-screen, position by mouse
 			if (!Settings.Default.PersistPosition 
-				|| Settings.Default.PopupPositionX < this.Width || Settings.Default.PopupPositionX > Screen.PrimaryScreen.Bounds.Width + this.Width
-				|| Settings.Default.PopupPositionY < this.Height || Settings.Default.PopupPositionY > Screen.PrimaryScreen.Bounds.Height + this.Height)
+				|| Settings.Default.PopupPositionX < Width || Settings.Default.PopupPositionX > Screen.PrimaryScreen.Bounds.Width + Width
+				|| Settings.Default.PopupPositionY < Height || Settings.Default.PopupPositionY > Screen.PrimaryScreen.Bounds.Height + Height)
 			{
-				this.Location = new Point(MousePosition.X - this.Width / 2, MousePosition.Y - this.Height - SystemInformation.IconSize.Height);
+				Location = new Point(MousePosition.X - Width / 2, MousePosition.Y - Height - SystemInformation.IconSize.Height);
 			}
 			else
-				this.Location = new Point(Settings.Default.PopupPositionX - this.Width, Settings.Default.PopupPositionY - this.Height);
+				Location = new Point(Settings.Default.PopupPositionX - Width, Settings.Default.PopupPositionY - Height);
 		}
 
 
@@ -89,8 +89,8 @@ namespace OctopusAgileNotification
 		{
 			if (mouseDown)
 			{
-				this.Location = new Point((this.Location.X - lastLocation.X) + e.X, (this.Location.Y - lastLocation.Y) + e.Y);
-				this.Update();
+				Location = new Point((Location.X - lastLocation.X) + e.X, (Location.Y - lastLocation.Y) + e.Y);
+				Update();
 			}
 		}
 
@@ -100,8 +100,8 @@ namespace OctopusAgileNotification
 			if (Settings.Default.PersistPosition)
 			{
 				// track the bottom right corner as the size will change.
-				Settings.Default.PopupPositionX = this.Location.X + this.Width;
-				Settings.Default.PopupPositionY = this.Location.Y + this.Height;
+				Settings.Default.PopupPositionX = Location.X + Width;
+				Settings.Default.PopupPositionY = Location.Y + Height;
 			}
 		}
 	}

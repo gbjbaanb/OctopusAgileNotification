@@ -32,8 +32,8 @@ namespace OctopusAgileNotification
 		// propagate mouseclicks up to the parent
 		public event MouseEventHandler MouseClick
 		{
-			add { this.notifyIcon.MouseClick += value; }
-			remove { this.notifyIcon.MouseClick -= value; }
+			add { notifyIcon.MouseClick += value; }
+			remove { notifyIcon.MouseClick -= value; }
 		}
 
 

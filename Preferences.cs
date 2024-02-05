@@ -101,7 +101,7 @@ namespace OctopusAgileNotification
 		}
 		#endregion
 
-		private Regex parser = new Regex("(?<baseapi>https[A-Za-z0-9:\\./-]+)/(?<product>[A-Za-z0-9-]+)/electricity-tariffs/(?<tariff>[A-Za-z0-9-]+)/");
+		private static Regex parser = new Regex("(?<baseapi>https[A-Za-z0-9:\\./-]+)/(?<product>[A-Za-z0-9-]+)/electricity-tariffs/(?<tariff>[A-Za-z0-9-]+)/");
 
 		private void textProduct_TextChanged(object sender, EventArgs e)
 		{
