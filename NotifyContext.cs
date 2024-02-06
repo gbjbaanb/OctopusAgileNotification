@@ -98,7 +98,11 @@ namespace OctopusAgileNotification
 		private void TimerRefreshPrices_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			if (dataFetcher.FetchPrices())
+			{
 				timerRefreshPrices.Interval = GetNext4pmInMs();
+				if (priceList != null)
+					priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
+			}
 			else
 				timerRefreshPrices.Interval = 60 * 60 * 1000; // 1 hr in milliseconds
 			timerRefreshPrices.Start();
@@ -109,6 +113,8 @@ namespace OctopusAgileNotification
 		private void TimerNext30_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+			if (priceList != null)
+				priceList.Invoke(new MethodInvoker(delegate() { priceList.RemoveLastEntry(); }));
 			timerNext30.Interval = new TimeSpan(0, 30, 0).TotalMilliseconds;
 			timerNext30.Start();
 		}
