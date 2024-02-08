@@ -81,7 +81,6 @@
 			ShowInTaskbar = false;
 			StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			Text = "PriceList";
-			TopMost = true;
 			ResumeLayout(false);
 		}
 
