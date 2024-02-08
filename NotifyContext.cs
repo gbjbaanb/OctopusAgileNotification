@@ -131,6 +131,9 @@ namespace OctopusAgileNotification
 					if (dataFetcher.GetCurrentPrice() == 0)
 						dataFetcher.FetchPrices();
 					trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+					if (priceList != null)
+						priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
+
 					break;
 				case PowerModes.Suspend:
 					break;
