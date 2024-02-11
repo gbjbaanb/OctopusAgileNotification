@@ -32,12 +32,12 @@ namespace OctopusAgileNotification
 
 			// timer to rupdate the UI with current price
 			timerNext30.Interval = GetNext30MinInMs();
-			timerNext30.AutoReset = false;
+			timerNext30.AutoReset = true;
 			timerNext30.Elapsed += TimerNext30_Elapsed;
 			timerNext30.Start();
 
 			timerRefreshPrices.Interval = GetNext4pmInMs();
-			timerRefreshPrices.AutoReset = false;
+			timerRefreshPrices.AutoReset = true;
 			timerRefreshPrices.Elapsed += TimerRefreshPrices_Elapsed;
 			timerRefreshPrices.Start();
 		}
@@ -105,7 +105,6 @@ namespace OctopusAgileNotification
 			}
 			else
 				timerRefreshPrices.Interval = 60 * 60 * 1000; // 1 hr in milliseconds
-			timerRefreshPrices.Start();
 		}
 
 
@@ -113,30 +112,30 @@ namespace OctopusAgileNotification
 		private void TimerNext30_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+
 			if (priceList != null)
 				priceList.Invoke(new MethodInvoker(delegate() { priceList.RemoveLastEntry(); }));
+
+			// reset the timer to trigger 30 seconds from now on
 			timerNext30.Interval = new TimeSpan(0, 30, 0).TotalMilliseconds;
-			timerNext30.Start();
 		}
 
 
 		private void OnPowerChange(object s, PowerModeChangedEventArgs e)
 		{
-			switch (e.Mode)
+			if (e.Mode == PowerModes.Resume)
 			{
-				case PowerModes.Resume:
-					// reset the timers and update the current display
-					timerNext30.Interval = GetNext30MinInMs();
-					timerRefreshPrices.Interval = GetNext4pmInMs();
-					if (dataFetcher.GetCurrentPrice() == 0)
-						dataFetcher.FetchPrices();
-					trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
-					if (priceList != null)
-						priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
+				// timers will auto-refrsh if missed, but we need the 30min to reset at the 30-min mark, not 30 min from wake time
+				timerNext30.Interval = GetNext30MinInMs();
 
-					break;
-				case PowerModes.Suspend:
-					break;
+				// update the current display
+				if (dataFetcher.GetCurrentPrice() == 0)
+					dataFetcher.FetchPrices();
+
+				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+
+				if (priceList != null)
+					priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
 			}
 		}
 
