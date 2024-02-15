@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -9,13 +11,13 @@ namespace OctopusAgileNotification
 {
 	public class NotifyContext : ApplicationContext
 	{
-		private readonly System.Timers.Timer timerNext30 = new System.Timers.Timer();
-		private readonly System.Timers.Timer timerRefreshPrices = new System.Timers.Timer();
+		private readonly System.Timers.Timer timerNext30 = new();
+		private readonly System.Timers.Timer timerRefreshPrices = new();
 
 		private readonly PriceFetch dataFetcher;
 		private readonly TrayIcon trayIcon;
 		private PriceList priceList = null;
-
+		internal readonly FixedSizedQueue logger = new(100);
 
 		public NotifyContext()
 		{
@@ -23,23 +25,28 @@ namespace OctopusAgileNotification
 			SystemEvents.PowerModeChanged += OnPowerChange;
 
 			dataFetcher = new PriceFetch();
-			trayIcon = new TrayIcon();
+			trayIcon = new TrayIcon(this);
 
 			trayIcon.MouseClick += new MouseEventHandler(this.TrayIconClick);
 
 			if (dataFetcher.FetchPrices())
 				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
+			else
+				logger.Enqueue("fetched prices OK");
 
 			// timer to rupdate the UI with current price
 			timerNext30.Interval = GetNext30MinInMs();
 			timerNext30.AutoReset = true;
 			timerNext30.Elapsed += TimerNext30_Elapsed;
 			timerNext30.Start();
+			logger.Enqueue($"UI update set tor {DateTime.Now.AddMilliseconds(timerNext30.Interval):t}");
+
 
 			timerRefreshPrices.Interval = GetNext4pmInMs();
 			timerRefreshPrices.AutoReset = true;
 			timerRefreshPrices.Elapsed += TimerRefreshPrices_Elapsed;
 			timerRefreshPrices.Start();
+			logger.Enqueue($"Price update set tor {DateTime.Now.AddMilliseconds(timerRefreshPrices.Interval):g}");
 		}
 
 
@@ -54,11 +61,13 @@ namespace OctopusAgileNotification
 					priceList.ActiveControl = null;
 					if (!Settings.Default.ClickToClose)
 						priceList.LostFocus += new EventHandler(LostFocus);
+					logger.Enqueue($"Show UI");
 				}
 				else
 				{
 					priceList.Close();
 					priceList = null;
+					logger.Enqueue($"Close UI");
 				}
 			}
 		}
@@ -70,6 +79,7 @@ namespace OctopusAgileNotification
 			f.Close();
 			f.Dispose();
 			priceList = null;
+			logger.Enqueue($"Autoclose UI");
 		}
 
 
@@ -104,7 +114,12 @@ namespace OctopusAgileNotification
 					priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
 			}
 			else
+			{
 				timerRefreshPrices.Interval = 60 * 60 * 1000; // 1 hr in milliseconds
+				logger.Enqueue($"Failed to fetch prices");
+			}
+
+			logger.Enqueue($"Price update set tor {DateTime.Now.AddMilliseconds(timerRefreshPrices.Interval):g}");
 		}
 
 
@@ -118,6 +133,7 @@ namespace OctopusAgileNotification
 
 			// reset the timer to trigger 30 seconds from now on
 			timerNext30.Interval = new TimeSpan(0, 30, 0).TotalMilliseconds;
+			logger.Enqueue($"UI update set tor {DateTime.Now.AddMilliseconds(timerNext30.Interval):t}");
 		}
 
 
@@ -125,17 +141,24 @@ namespace OctopusAgileNotification
 		{
 			if (e.Mode == PowerModes.Resume)
 			{
-				// timers will auto-refrsh if missed, but we need the 30min to reset at the 30-min mark, not 30 min from wake time
-				timerNext30.Interval = GetNext30MinInMs();
+				// timers *should* auto-refresh if missed, but they don't. If wake after 4pm and not fetched tomorrow's data, get it now.
+				if (DateTime.Now.Hour > 16 && dataFetcher.GetPrices().lastFetched.Day != DateTime.Now.Day)
+					dataFetcher.FetchPrices();
 
-				// update the current display
+				// fetch more data if we've been asleep for long time
 				if (dataFetcher.GetCurrentPrice() == 0)
 					dataFetcher.FetchPrices();
+
+				// we need the 30min to reset at the 30-min mark, not 30 min from wake time
+				timerNext30.Interval = GetNext30MinInMs();
+				timerRefreshPrices.Interval = GetNext4pmInMs();
 
 				trayIcon.SetTextIcon(dataFetcher.GetCurrentPrice());
 
 				if (priceList != null)
 					priceList.Invoke(new MethodInvoker(delegate () { priceList.UpdatePrices(dataFetcher.GetPrices()); }));
+
+				logger.Enqueue($"Resumed from sleep. UI update set tor {DateTime.Now.AddMilliseconds(timerNext30.Interval):t}, Price update set for {DateTime.Now.AddMilliseconds(timerRefreshPrices.Interval):g}");
 			}
 		}
 

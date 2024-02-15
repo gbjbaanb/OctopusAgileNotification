@@ -27,6 +27,8 @@ namespace OctopusAgileNotification
 		private readonly Thresholds thresholds;
 		private float currentPrice;
 
+		private NotifyContext context;
+
 		// propagate mouseclicks up to the parent
 		public event MouseEventHandler MouseClick
 		{
@@ -35,14 +37,16 @@ namespace OctopusAgileNotification
 		}
 
 
-		public TrayIcon()
+		public TrayIcon(NotifyContext ctx)
 		{
+			context = ctx;
 			notifyIcon = new NotifyIcon()
 			{
 				Icon = Resources.Constantine32,
 				ContextMenuStrip = new ContextMenuStrip()
 				{
 					Items = { 
+						new ToolStripMenuItem("Log", null, ShowLog),
 						new ToolStripMenuItem("Settings", null, ChangeSettings),
 						new ToolStripMenuItem("Exit", null, Exit)
 					}
@@ -79,6 +83,12 @@ namespace OctopusAgileNotification
 			notifyIcon.Icon = newIcon;
 		}
 
+
+		void ShowLog(object sender, EventArgs e)
+		{
+			LogUI logUI = new LogUI(context.logger);
+			logUI.Show();
+		}
 
 		void ChangeSettings(object sender, EventArgs e)
 		{

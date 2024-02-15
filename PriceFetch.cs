@@ -48,12 +48,13 @@ namespace OctopusAgileNotification
 							if (newPrices != null && newPrices.results != null && newPrices.results[0].valid_from != lastHighestTime)
 							{
 								ret = true;
+								newPrices.lastFetched = DateTime.Now;
 								prices = newPrices;
 							}
 						}
 					}
 					else
-						prices = new JsonPriceOverview() { count = 0 };
+						prices = new JsonPriceOverview() { lastFetched = DateTime.Now, count = 0 };
 				}
 			}
 			catch (Exception)
@@ -63,7 +64,7 @@ namespace OctopusAgileNotification
 			return ret;
 		}
 
-		// gets price for the curent half-hour, note we return the on-the-half-hour value (eg 22:00->22:29)
+		// gets price for the current half-hour, note we return the on-the-half-hour value (eg 22:00->22:29)
 		public float GetCurrentPrice()
 		{
 			return prices.results.SingleOrDefault(i => i.valid_from <= DateTime.Now && i.valid_to > DateTime.Now)?.value_inc_vat ?? 0;
