@@ -27,7 +27,7 @@ namespace OctopusAgileNotification
 			
 			try
 			{
-				using var task = _httpClient.GetAsync($"{ProductCode}//electricity-tariffs/{TariffCode}/standard-unit-rates/?period_from={DateTime.Now:s}");
+				using var task = _httpClient.GetAsync($"{ProductCode}//electricity-tariffs/{TariffCode}/standard-unit-rates/?period_from={DateTime.UtcNow:u}");
 				if (!task.Wait(10000))
 					return false;
 
@@ -45,11 +45,16 @@ namespace OctopusAgileNotification
 						if (jsonResponse.Wait(10000))
 						{
 							var newPrices = JsonSerializer.Deserialize<JsonPriceOverview>(jsonResponse.Result);
-							if (newPrices != null && newPrices.results != null && newPrices.results[0].valid_from != lastHighestTime)
+							if (newPrices != null && newPrices.results != null)
 							{
-								ret = true;
-								newPrices.lastFetched = DateTime.Now;
-								prices = newPrices;
+								newPrices.results.ForEach(d => { d.valid_from = d.valid_from.ToLocalTime(); d.valid_to = d.valid_to.ToLocalTime(); });
+								if (newPrices.results[0].valid_from > lastHighestTime)
+								{
+									ret = true;
+									newPrices.lastFetched = DateTime.Now;
+
+									prices = newPrices;
+								}
 							}
 						}
 					}
