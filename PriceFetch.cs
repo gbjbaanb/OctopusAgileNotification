@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Net.Http;
+using OctopusAgileNotification.Properties;
 
 namespace OctopusAgileNotification
 {
@@ -10,15 +11,12 @@ namespace OctopusAgileNotification
 		private JsonPriceOverview prices;
 
 		private readonly HttpClient _httpClient;
-		private const string TariffUrl = "https://api.octopus.energy/v1/products/";
-		private const string ProductCode = "AGILE-FLEX-22-11-25";
-		private const string TariffCode = "E-1R-AGILE-FLEX-22-11-25-H";
+
 
 		public PriceFetch()
 		{
-			_httpClient = new() { BaseAddress = new Uri(TariffUrl) };
+			_httpClient = new() { BaseAddress = new Uri(Settings.Default.OctopusBaseURL) };
 		}
-
 
 		// returns true if prices were fetched and changed from previous set
 		public bool FetchPrices()
@@ -27,7 +25,7 @@ namespace OctopusAgileNotification
 			
 			try
 			{
-				using var task = _httpClient.GetAsync($"{ProductCode}//electricity-tariffs/{TariffCode}/standard-unit-rates/?period_from={DateTime.UtcNow:u}");
+				using var task = _httpClient.GetAsync($"{Settings.Default.ProductCode}/electricity-tariffs/{Settings.Default.TariffCode}/standard-unit-rates/?period_from={DateTime.UtcNow:u}");
 				if (!task.Wait(10000))
 					return false;
 

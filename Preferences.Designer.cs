@@ -36,8 +36,8 @@
 			labelAPI = new System.Windows.Forms.Label();
 			textBoxDescription = new System.Windows.Forms.TextBox();
 			textProduct = new System.Windows.Forms.TextBox();
-			textTariff = new System.Windows.Forms.TextBox();
 			textAPI = new System.Windows.Forms.TextBox();
+			textTariff = new System.Windows.Forms.TextBox();
 			okButton = new System.Windows.Forms.Button();
 			btnColourFg0 = new System.Windows.Forms.Button();
 			textBoxThreshold0 = new System.Windows.Forms.TextBox();
@@ -74,20 +74,19 @@
 			tableLayoutPanel.Controls.Add(labelAPI, 1, 3);
 			tableLayoutPanel.Controls.Add(textBoxDescription, 1, 4);
 			tableLayoutPanel.Controls.Add(textProduct, 2, 1);
-			tableLayoutPanel.Controls.Add(textTariff, 2, 2);
 			tableLayoutPanel.Controls.Add(textAPI, 2, 3);
+			tableLayoutPanel.Controls.Add(textTariff, 2, 2);
 			tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			tableLayoutPanel.Location = new System.Drawing.Point(10, 10);
 			tableLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			tableLayoutPanel.Name = "tableLayoutPanel";
 			tableLayoutPanel.RowCount = 5;
+			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
 			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.2857141F));
 			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.2857141F));
-			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.2857141F));
-			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.2857141F));
-			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.8571434F));
-			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			tableLayoutPanel.Size = new System.Drawing.Size(487, 207);
+			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.643836F));
+			tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.2328758F));
+			tableLayoutPanel.Size = new System.Drawing.Size(487, 292);
 			tableLayoutPanel.TabIndex = 0;
 			// 
 			// logoPictureBox
@@ -98,7 +97,7 @@
 			logoPictureBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			logoPictureBox.Name = "logoPictureBox";
 			tableLayoutPanel.SetRowSpan(logoPictureBox, 5);
-			logoPictureBox.Size = new System.Drawing.Size(118, 201);
+			logoPictureBox.Size = new System.Drawing.Size(118, 286);
 			logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			logoPictureBox.TabIndex = 12;
 			logoPictureBox.TabStop = false;
@@ -119,7 +118,7 @@
 			// labelProduct
 			// 
 			labelProduct.Dock = System.Windows.Forms.DockStyle.Fill;
-			labelProduct.Location = new System.Drawing.Point(133, 29);
+			labelProduct.Location = new System.Drawing.Point(133, 41);
 			labelProduct.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
 			labelProduct.MaximumSize = new System.Drawing.Size(0, 20);
 			labelProduct.Name = "labelProduct";
@@ -131,7 +130,7 @@
 			// labelTariff
 			// 
 			labelTariff.Dock = System.Windows.Forms.DockStyle.Fill;
-			labelTariff.Location = new System.Drawing.Point(133, 58);
+			labelTariff.Location = new System.Drawing.Point(133, 82);
 			labelTariff.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
 			labelTariff.MaximumSize = new System.Drawing.Size(0, 20);
 			labelTariff.Name = "labelTariff";
@@ -143,7 +142,7 @@
 			// labelAPI
 			// 
 			labelAPI.Dock = System.Windows.Forms.DockStyle.Fill;
-			labelAPI.Location = new System.Drawing.Point(133, 87);
+			labelAPI.Location = new System.Drawing.Point(133, 123);
 			labelAPI.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
 			labelAPI.MaximumSize = new System.Drawing.Size(0, 20);
 			labelAPI.Name = "labelAPI";
@@ -156,48 +155,48 @@
 			// 
 			tableLayoutPanel.SetColumnSpan(textBoxDescription, 2);
 			textBoxDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			textBoxDescription.Location = new System.Drawing.Point(133, 119);
+			textBoxDescription.Location = new System.Drawing.Point(133, 159);
 			textBoxDescription.Margin = new System.Windows.Forms.Padding(7, 3, 4, 3);
 			textBoxDescription.Multiline = true;
 			textBoxDescription.Name = "textBoxDescription";
 			textBoxDescription.ReadOnly = true;
 			textBoxDescription.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			textBoxDescription.Size = new System.Drawing.Size(350, 85);
+			textBoxDescription.Size = new System.Drawing.Size(350, 130);
 			textBoxDescription.TabIndex = 23;
 			textBoxDescription.TabStop = false;
-			textBoxDescription.Text = "Enter the Tariff or Product codes from your account, or paste the API for Unit Rates (not consumption) from https://octopus.energy/dashboard/new/accounts/personal-details/api-access";
+			textBoxDescription.Text = resources.GetString("textBoxDescription.Text");
 			// 
 			// textProduct
 			// 
-			textProduct.Location = new System.Drawing.Point(239, 32);
+			textProduct.Location = new System.Drawing.Point(239, 44);
 			textProduct.Name = "textProduct";
 			textProduct.Size = new System.Drawing.Size(229, 23);
 			textProduct.TabIndex = 25;
 			textProduct.Text = "AGILE-18-02-21";
 			textProduct.TextChanged += textProduct_TextChanged;
 			// 
+			// textAPI
+			// 
+			textAPI.Location = new System.Drawing.Point(239, 126);
+			textAPI.Name = "textAPI";
+			textAPI.Size = new System.Drawing.Size(229, 23);
+			textAPI.TabIndex = 27;
+			textAPI.TextChanged += textAPI_TextChanged;
+			// 
 			// textTariff
 			// 
-			textTariff.Location = new System.Drawing.Point(239, 61);
+			textTariff.Location = new System.Drawing.Point(239, 85);
 			textTariff.Name = "textTariff";
 			textTariff.Size = new System.Drawing.Size(229, 23);
 			textTariff.TabIndex = 26;
 			textTariff.Text = "E-1R-AGILE-18-02-21-C";
 			textTariff.TextChanged += textTariff_TextChanged;
 			// 
-			// textAPI
-			// 
-			textAPI.Location = new System.Drawing.Point(239, 90);
-			textAPI.Name = "textAPI";
-			textAPI.Size = new System.Drawing.Size(229, 23);
-			textAPI.TabIndex = 27;
-			textAPI.TextChanged += textAPI_TextChanged;
-			// 
 			// okButton
 			// 
 			okButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
 			okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			okButton.Location = new System.Drawing.Point(431, 326);
+			okButton.Location = new System.Drawing.Point(431, 419);
 			okButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			okButton.Name = "okButton";
 			okButton.Size = new System.Drawing.Size(66, 27);
@@ -324,7 +323,7 @@
 			// 
 			// textBoxThreshold3
 			// 
-			textBoxThreshold3.Location = new System.Drawing.Point(435, 220);
+			textBoxThreshold3.Location = new System.Drawing.Point(409, 331);
 			textBoxThreshold3.Name = "textBoxThreshold3";
 			textBoxThreshold3.ReadOnly = true;
 			textBoxThreshold3.Size = new System.Drawing.Size(62, 23);
@@ -348,7 +347,7 @@
 			groupBoxThresholds.Controls.Add(btnColourBg1);
 			groupBoxThresholds.Controls.Add(btnColourBg2);
 			groupBoxThresholds.Controls.Add(btnColourFg1);
-			groupBoxThresholds.Location = new System.Drawing.Point(14, 223);
+			groupBoxThresholds.Location = new System.Drawing.Point(14, 308);
 			groupBoxThresholds.Name = "groupBoxThresholds";
 			groupBoxThresholds.Size = new System.Drawing.Size(389, 105);
 			groupBoxThresholds.TabIndex = 37;
@@ -377,7 +376,7 @@
 			// chkPersistPosition
 			// 
 			chkPersistPosition.AutoSize = true;
-			chkPersistPosition.Location = new System.Drawing.Point(23, 334);
+			chkPersistPosition.Location = new System.Drawing.Point(23, 419);
 			chkPersistPosition.Name = "chkPersistPosition";
 			chkPersistPosition.Size = new System.Drawing.Size(144, 19);
 			chkPersistPosition.TabIndex = 38;
@@ -388,7 +387,7 @@
 			// chkClickClose
 			// 
 			chkClickClose.AutoSize = true;
-			chkClickClose.Location = new System.Drawing.Point(173, 334);
+			chkClickClose.Location = new System.Drawing.Point(173, 419);
 			chkClickClose.Name = "chkClickClose";
 			chkClickClose.Size = new System.Drawing.Size(98, 19);
 			chkClickClose.TabIndex = 39;
@@ -400,7 +399,7 @@
 			AcceptButton = okButton;
 			AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			ClientSize = new System.Drawing.Size(507, 363);
+			ClientSize = new System.Drawing.Size(507, 456);
 			Controls.Add(chkClickClose);
 			Controls.Add(chkPersistPosition);
 			Controls.Add(textBoxThreshold3);

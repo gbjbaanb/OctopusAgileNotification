@@ -28,7 +28,7 @@ namespace OctopusAgileNotification
 
 
 // Octpus API
-// https://developer.octopus.energy/docs/api/
+// https://developer.octopus.energy/
 
 // example personal
 // https://octopus.energy/dashboard/new/accounts/personal-details/api-access

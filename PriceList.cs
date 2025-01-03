@@ -51,32 +51,33 @@ namespace OctopusAgileNotification
 			listViewPrices.BeginUpdate();
 			listViewPrices.Items.Clear();
 
-			foreach (var item in prices.results.Where(i => i.valid_to > DateTime.Now))
-			{
-				ListViewItem.ListViewSubItem s = new()
+			if (prices != null && prices.results != null)
+				foreach (var item in prices.results.Where(i => i.valid_to > DateTime.Now))
 				{
-					BackColor = thresholds.GetColours(item.value_inc_vat).backColour,
-					Text = $"{item.value_inc_vat:F2}p",
-					ForeColor = thresholds.GetColours(item.value_inc_vat).textColour,
-				};
+					ListViewItem.ListViewSubItem s = new()
+					{
+						BackColor = thresholds.GetColours(item.value_inc_vat).backColour,
+						Text = $"{item.value_inc_vat:F2}p",
+						ForeColor = thresholds.GetColours(item.value_inc_vat).textColour,
+					};
 
-				ListViewItem i = new()
-				{
-					Text = $"{item.valid_from:t}",
-					UseItemStyleForSubItems = false,
-					SubItems = { s }
-				};
+					ListViewItem i = new()
+					{
+						Text = $"{item.valid_from:t}",
+						UseItemStyleForSubItems = false,
+						SubItems = { s }
+					};
 
-				if (WinColours.GetWindowsColorMode() == 0)
-				{
-					if (s.BackColor.A < 255)
-						s.BackColor = taskbarColour;
-					i.BackColor = taskbarColour;
-					i.ForeColor = taskbarContrast;
+					if (WinColours.GetWindowsColorMode() == 0)
+					{
+						if (s.BackColor.A < 255)
+							s.BackColor = taskbarColour;
+						i.BackColor = taskbarColour;
+						i.ForeColor = taskbarContrast;
+					}
+
+					listViewPrices.Items.Add(i);
 				}
-
-				listViewPrices.Items.Add(i);
-			}
 			listViewPrices.EndUpdate();
 
 			ResizeForm();

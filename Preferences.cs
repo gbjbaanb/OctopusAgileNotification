@@ -100,7 +100,7 @@ namespace OctopusAgileNotification
 		}
 		#endregion
 
-		private static Regex parser = new Regex("(?<baseapi>https[A-Za-z0-9:\\./-]+)/(?<product>[A-Za-z0-9-]+)/electricity-tariffs/(?<tariff>[A-Za-z0-9-]+)/");
+		private static Regex parser = new Regex("(?<baseapi>https:[A-Za-z0-9\\./-]+)/(?<product>[A-Za-z0-9-]+)/electricity-tariffs/(?<tariff>[A-Za-z0-9-]+)/");
 
 		private void textProduct_TextChanged(object sender, EventArgs e)
 		{
@@ -119,7 +119,7 @@ namespace OctopusAgileNotification
 
 			if (m.Success)
 			{
-				Settings.Default.OctopusBaseURL = m.Groups[1].Captures[0].Value;
+				Settings.Default.OctopusBaseURL = m.Groups[1].Captures[0].Value + '/';
 				textProduct.Text = m.Groups[2].Captures[0].Value;
 				textTariff.Text = m.Groups[3].Captures[0].Value;
 			}
@@ -168,6 +168,8 @@ namespace OctopusAgileNotification
 			{
 				// nothing to do, we'll reset to previous or defaults later
 			}
+
+			Settings.Default.Save();
 		}
 
 		private void Preferences_Load(object sender, EventArgs e)
@@ -231,7 +233,7 @@ namespace OctopusAgileNotification
 		private void textBoxThreshold2_TextChanged(object sender, EventArgs e)
 		{
 			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val > 0)
-			{ 
+			{
 				thresholdPrefs[2].threshold = val;
 			}
 		}
@@ -269,5 +271,6 @@ namespace OctopusAgileNotification
 		{
 			Settings.Default.PersistPosition = chkPersistPosition.Checked;
 		}
+
 	}
 }
