@@ -39,8 +39,7 @@ namespace OctopusAgileNotification
 
 			try
 			{
-				if (thresholdFont != null)
-					thresholdFont.Dispose();
+				thresholdFont?.Dispose();
 
 				TypeConverter cvt = TypeDescriptor.GetConverter(typeof(Font));
 				thresholdFont = (Font)cvt.ConvertFromInvariantString(Settings.Default.Font);

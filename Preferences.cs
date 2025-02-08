@@ -216,7 +216,7 @@ namespace OctopusAgileNotification
 
 		private void textBoxThreshold0_TextChanged(object sender, EventArgs e)
 		{
-			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val > 0)
+			if (Int32.TryParse(((TextBox)sender).Text, out int val) && val >= 0)
 			{
 				thresholdPrefs[0].threshold = val;
 			}

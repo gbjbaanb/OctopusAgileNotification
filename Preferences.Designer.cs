@@ -195,7 +195,7 @@
 			// okButton
 			// 
 			okButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-			okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			okButton.Location = new System.Drawing.Point(431, 419);
 			okButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			okButton.Name = "okButton";
