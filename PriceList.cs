@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using OctopusAgileNotification.Properties;
@@ -54,6 +55,7 @@ namespace OctopusAgileNotification
 			if (prices != null && prices.results != null)
 				foreach (var item in prices.results.Where(i => i.valid_to > DateTime.Now))
 				{
+					// create a Subitem for the price
 					ListViewItem.ListViewSubItem s = new()
 					{
 						BackColor = thresholds.GetColours(item.value_inc_vat).backColour,
@@ -61,6 +63,7 @@ namespace OctopusAgileNotification
 						ForeColor = thresholds.GetColours(item.value_inc_vat).textColour,
 					};
 
+					// create an Item for the row
 					ListViewItem i = new()
 					{
 						Text = $"{item.valid_from:t}",
@@ -73,7 +76,15 @@ namespace OctopusAgileNotification
 						if (s.BackColor.A < 255)
 							s.BackColor = taskbarColour;
 						i.BackColor = taskbarColour;
-						i.ForeColor = taskbarContrast;
+
+						// highlight the peak time slots with a 5% boost
+						if (item.valid_from.Hour >= 16 && item.valid_from.Hour < 19)
+						{
+							const int delta = 5;
+							i.ForeColor = Color.FromArgb(Math.Max(255, i.ForeColor.R + delta), Math.Max(255, i.ForeColor.G + delta), Math.Max(255, i.ForeColor.B + delta));
+						}
+						else
+							i.ForeColor = taskbarContrast;
 					}
 
 					listViewPrices.Items.Add(i);
